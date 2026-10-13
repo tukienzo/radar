@@ -1,4 +1,5 @@
 # Crons del Radar por GitHub Actions: la alternativa gratis a los crons de Vercel.
+# Para usarlo, copiá este archivo a .github/workflows/radar-crons.yml en tu repo.
 # Vercel Hobby solo permite crons una vez por día y el Radar necesita procesar cada 10 minutos.
 #
 # Está APAGADO hasta que crees en el repo (Settings → Secrets and variables → Actions):

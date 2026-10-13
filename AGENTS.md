@@ -71,7 +71,7 @@ npx vercel --prod
 ```
 - **Vercel Pro:** los crons de `vercel.json` corren solos (ciclo cada 10 minutos, historias dos veces por día…).
 - **Vercel Hobby (gratis):** solo permite crons diarios y el deploy falla con los de `vercel.json`. Dejá
-  `vercel.json` como `{"crons": []}` y prendé `.github/workflows/radar-crons.yml`: en el repo de la persona, variable
+  `vercel.json` como `{"crons": []}`, copiá `extras/radar-crons.yml` a `.github/workflows/radar-crons.yml` y prendelo: en el repo de la persona, variable
   `RADAR_CRON_GITHUB=true` y secretos `RADAR_URL` y `CRON_SECRET` (Settings → Secrets and variables → Actions).
 - Otro hosting: cualquier cron externo que llame `GET /api/radar-sync?paso=<paso>` con
   `Authorization: Bearer <CRON_SECRET>` (los horarios están en `vercel.json`).
