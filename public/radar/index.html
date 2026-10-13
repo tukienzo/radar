@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Radar de contenido</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2714%27 fill=%27%236EB4F7%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%275%27 fill=%27%230B0B0D%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0B0D; --surface:#141417; --surface2:#1C1C21;
+  --ink:#F4F4F5; --muted:#84848E; --line:rgba(255,255,255,.07); --line-strong:rgba(255,255,255,.16);
+  --green:#4ADE80; --amber:#E8C468; --red:#F0716A; --blue:#6EB4F7; --purple:#B49DF6;
+  --r-s:8px; --r-m:10px; --r-l:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{color-scheme:dark}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45;font-size:13.5px;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+b{font-weight:600}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--line-strong);outline-offset:2px;border-radius:4px}
+#gate{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;padding:24px}
+#gate h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
+#gate h1 span{color:var(--muted)}
+#gate input{background:var(--surface);border:1px solid var(--line-strong);color:var(--ink);padding:12px 16px;border-radius:var(--r-m);font-size:16px;width:250px;text-align:center;font-family:inherit}
+#gate button{background:#FAFAFA;color:#111;border:none;padding:12px 28px;border-radius:var(--r-m);font-weight:600;font-size:14px}
+#gate .err{color:var(--red);font-size:12.5px;min-height:16px}
+.top{position:sticky;top:0;z-index:20;background:rgba(11,11,13,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:-.02em;font-size:15px}
+.brand span{color:var(--muted);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;color:var(--muted)}
+.chip.demo{color:#111;background:var(--amber);border-color:var(--amber);font-weight:700}
+.tabs{display:flex;gap:4px;margin-left:auto;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto}
+@media(max-width:700px){.tabs{margin-left:0;width:100%}}
+.tabs button{background:transparent;border:1px solid transparent;color:var(--muted);padding:7px 12px;border-radius:var(--r-s);font-weight:600;font-size:13px}
+.tabs button.on{background:var(--surface2);color:var(--ink);border-color:var(--line)}
+main{max-width:1280px;margin:0 auto;padding:18px 16px 60px}
+.view{display:none}.view.on{display:block}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:14px 16px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--line-strong)}
+.kpi[data-sem=ok]::before{background:var(--green)}.kpi[data-sem=warn]::before{background:var(--amber)}
+.kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.kpi-value{font-size:32px;font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-top:4px}
+.kpi-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:16px;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.card-title .sub{color:var(--muted);font-weight:500}
+.i{display:inline-flex;width:15px;height:15px;border-radius:50%;border:1px solid var(--line-strong);color:var(--muted);font-size:10px;align-items:center;justify-content:center;font-style:normal;cursor:help}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:860px){.cols2{grid-template-columns:1fr}}
+.cols2>*{min-width:0}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filters select,.filters input{background:var(--surface2);border:1px solid var(--line);color:var(--ink);padding:7px 10px;border-radius:var(--r-s);font-size:12.5px;font-family:inherit}
+.filters input{min-width:200px}
+.filters label.chip{flex:0 0 auto;padding:6px 10px}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{text-align:left;color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:8px 8px;border-bottom:1px solid var(--line);white-space:nowrap;cursor:pointer;user-select:none}
+.tbl th.r,.tbl td.r{text-align:right;font-variant-numeric:tabular-nums}
+.tbl td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr.row{cursor:pointer}.tbl tr.row:hover td{background:var(--surface2)}
+.tbl tr.sin-dato td{opacity:.55}
+.cap{max-width:420px;color:var(--ink)}
+.cap small{display:block;color:var(--muted);margin-top:2px}
+.tag{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:999px;background:var(--surface2);border:1px solid var(--line);color:var(--muted);margin:1px 2px 0 0;white-space:nowrap}
+.tag.tipo{color:var(--blue)}.tag.ok{color:var(--green)}.tag.warn{color:var(--amber)}
+.out{font-weight:700}.out.hot{color:var(--green)}.out.hot::after{content:" ▲"}
+.scroll-x{overflow:auto}
+.barra-row{display:grid;grid-template-columns:150px 1fr 40px;gap:10px;align-items:center;padding:5px 0;font-size:12.5px}
+.barra-track{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden}
+.barra-fill{height:100%;background:var(--blue);border-radius:4px}
+.barra-val{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.empty{color:var(--muted);padding:20px;text-align:center;border:1px dashed var(--line-strong);border-radius:var(--r-m)}
+.muted{color:var(--muted)}
+/* drawer */
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(620px,100%);background:var(--surface);border-left:1px solid var(--line-strong);transform:translateX(100%);transition:transform .22s;z-index:50;overflow:auto;padding:18px 20px 40px}
+#drawer.open{transform:none}
+#drawer h2{font-size:15px;font-weight:700;letter-spacing:-.01em;margin:8px 0 6px}
+#drawer h3{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:16px 0 6px}
+.dhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.x{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:var(--r-s);padding:5px 9px}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.met{background:var(--surface2);border-radius:var(--r-s);padding:8px 10px}
+.met b{display:block;font-size:18px;font-weight:800;letter-spacing:-.02em}
+.met span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+pre.copy{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-s);padding:10px 12px;font:12.5px/1.5 Inter,sans-serif;white-space:pre-wrap;color:var(--ink)}
+.btn{background:#FAFAFA;color:#111;border:none;padding:9px 14px;border-radius:var(--r-s);font-weight:600;font-size:13px}
+.btn.sec{background:var(--surface2);color:var(--ink);border:1px solid var(--line-strong)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.beats li{margin:4px 0 4px 16px}
+.beats i{color:var(--muted);font-style:normal}
+.flash{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--line-strong);padding:9px 14px;border-radius:var(--r-m);font-size:13px;opacity:0;transition:opacity .2s;z-index:60;pointer-events:none}
+.flash.on{opacity:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.gc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);overflow:hidden;cursor:pointer;transition:transform .12s,border-color .12s}
+.gc:hover{transform:translateY(-2px);border-color:var(--line-strong)}
+.gi{position:relative;aspect-ratio:4/5;background:var(--surface2)}
+.gi img{width:100%;height:100%;object-fit:cover;display:block}
+.gi .noimg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px}
+.gi .ov{position:absolute;left:0;right:0;bottom:0;padding:26px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,.85));display:flex;justify-content:space-between;align-items:flex-end;font-size:12px}
+.gi .ov b{font-size:18px;font-weight:800;letter-spacing:-.02em;color:#fff}
+.gi .ov b small{font-size:10.5px;font-weight:600;color:rgba(255,255,255,.7);margin-left:3px;letter-spacing:0}
+.gi .rk{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:#fff;font-weight:800;font-size:12px;padding:2px 7px;border-radius:999px}
+.gi .md{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.7);color:#fff;font-size:10.5px;padding:2px 7px;border-radius:999px;text-transform:uppercase;letter-spacing:.05em}
+.gb{padding:9px 10px 10px}
+.gb .cu{font-weight:700;font-size:12.5px}
+.gb .cap{font-size:12px;color:var(--muted);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gb .tags{margin-top:6px}
+.th{width:48px;height:60px;object-fit:cover;border-radius:6px;display:block;background:var(--surface2)}
+.dimg{width:100%;max-height:340px;object-fit:cover;border-radius:var(--r-m);margin:10px 0;display:block;background:var(--surface2)}
+.slides{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+.slides figure{flex:0 0 190px;scroll-snap-align:start}
+.slides img{width:190px;aspect-ratio:4/5;object-fit:cover;border-radius:8px;display:block;background:var(--surface2)}
+.slides figcaption{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.35}
+.hrow{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;align-items:end;height:70px}
+.hrow div{background:var(--blue);border-radius:2px 2px 0 0;min-height:2px}
+.hlab{display:grid;grid-template-columns:repeat(24,1fr);gap:2px;font-size:9.5px;color:var(--muted);text-align:center;margin-top:3px}
+.acc-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.acc-head select{background:var(--surface2);border:1px solid var(--line-strong);color:var(--ink);padding:8px 12px;border-radius:var(--r-s);font:600 14px Inter,sans-serif}
+.dos p{margin:6px 0}
+.dos ul{margin:4px 0 8px 18px}
+footer{color:var(--muted);font-size:11.5px;text-align:center;padding:20px}
+/* guion (creator-lab) */
+.gl-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.gl-chip{background:var(--surface);border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:6px 11px;font-size:12px;font-weight:600;display:inline-flex;gap:6px;align-items:baseline}
+.gl-chip b{color:var(--ink);font-variant-numeric:tabular-nums}
+.gl-chip.on{border-color:#3987e5;color:var(--ink);background:rgba(57,135,229,.14)}
+.gl-chip.chica{opacity:.5}
+.gl-seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-s);padding:2px}
+.gl-seg button{background:transparent;border:none;color:var(--muted);padding:6px 10px;border-radius:6px;font-weight:600;font-size:12.5px}
+.gl-seg button.on{background:var(--surface2);color:var(--ink)}
+.gl-bars{display:flex;flex-direction:column;gap:2px}
+.gl-row{display:grid;grid-template-columns:150px 1fr 64px 64px 48px;gap:12px;align-items:center;padding:8px 10px;border-radius:8px;border:none;background:transparent;color:inherit;text-align:left;font:inherit;font-size:13px;width:100%}
+button.gl-row{cursor:pointer}
+button.gl-row:hover{background:var(--surface2)}
+.gl-row.on{background:rgba(57,135,229,.16)}
+.gl-row.chica{opacity:.45}
+.gl-row .r{text-align:right;font-variant-numeric:tabular-nums}
+.gl-row b.r{font-weight:800;font-size:14px}
+.gl-head{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:600;padding-bottom:2px}
+.gl-track{position:relative;height:18px}
+.gl-track::before{content:"";position:absolute;left:50%;top:-5px;bottom:-5px;width:1px;background:var(--line-strong)}
+.gl-head .gl-track::before{display:none}
+.gl-head .gl-track i{position:absolute;transform:translateX(-50%);font-style:normal;text-transform:none;letter-spacing:0;top:2px}
+.gl-bar{position:absolute;top:3px;height:12px;background:#3987e5;border-radius:3px}
+.gl-prop{position:absolute;top:-3px;height:24px;width:2px;margin-left:-1px;background:var(--ink);border-radius:1px}
+.gl-ley{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);font-weight:500}
+.gl-ley-bar{display:inline-block;width:14px;height:8px;background:#3987e5;border-radius:2px}
+.gl-ley-prop{display:inline-block;width:2px;height:12px;background:var(--ink);margin-left:8px}
+@media(max-width:640px){
+  .gl-row{grid-template-columns:1fr 60px 40px;gap:6px 10px}
+  .gl-row .gl-track{grid-column:1/-1;grid-row:2}
+  .gl-row .gl-com{display:none}
+  .gl-head>span:first-child{display:none}
+  .gl-head{grid-template-columns:1fr}
+  .gl-head>span.r{display:none}
+  .gl-head .gl-track{grid-row:1}
+}
+.gl-seq{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0 2px}
+.gl-seq .tag{font-size:12px;padding:4px 10px;color:var(--ink);margin:0}
+.gl-seq i{color:var(--muted);font-style:normal}
+.gl-seqs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
+@media(max-width:640px){.gl-seqs{grid-template-columns:1fr}}
+.gl-tr{display:grid;grid-template-columns:78px 1fr;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:13px}
+.gl-tr .tag{justify-self:start;align-self:start}
+.hs .gi{aspect-ratio:9/16}
+.hs .gb .cap{-webkit-line-clamp:3}
+.gl-labs{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;font-size:12.5px}
+.gl-labs span:nth-child(3n+1){color:var(--muted)}
+.gl-labs span:nth-child(3n){color:var(--muted);font-variant-numeric:tabular-nums}
+/* agregados */
+.chip.falta{color:#111;background:var(--amber);border-color:var(--amber);font-weight:700;cursor:pointer}
+.alta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.alta input,.alta select{background:var(--surface2);border:1px solid var(--line);color:var(--ink);padding:8px 10px;border-radius:var(--r-s);font-size:12.5px;font-family:inherit}
+.alta input.h{min-width:280px;flex:1}
+.lk{background:transparent;border:none;color:var(--blue);font-size:12px;padding:0 4px;font-weight:600}
+.lk.peligro{color:var(--muted)}
+.paso{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.paso small{display:block;color:var(--muted);margin-top:2px}
+.ok{color:var(--green)}.mal{color:var(--red)}
+.cargando{opacity:.6;pointer-events:none}
+.filters label.chip input,.alta label.chip input{min-width:0;padding:0}
+#t-semillas td{vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">Radar <span id="brand-sub">· de contenido</span></div>
+  <span class="chip" id="c-sem">semana —</span>
+  <span class="chip" id="c-corte" title="fecha y hora de la última corrida">corte —</span>
+  <span class="chip demo" id="c-demo" style="display:none" title="datos generados para probar el radar. No son piezas reales.">DATOS DE DEMO</span>
+  <span class="chip" id="c-con" style="display:none"></span>
+  <button class="btn sec" id="b-sync" style="display:none;padding:5px 11px;font-size:12px">Sincronizar</button>
+  <nav class="tabs" id="tabs">
+    <button data-v="semana" class="on">Semana</button>
+    <button data-v="grilla">Grilla</button>
+    <button data-v="cuentas">Cuentas</button>
+    <button data-v="guion">Guion</button>
+    <button data-v="historias">Historias</button>
+    <button data-v="semillas">Semillas</button>
+    <button data-v="comentarios">Comentarios</button>
+    <button data-v="competencia">Competencia</button>
+  </nav>
+</div>
+
+<main>
+  <section class="view on" id="v-semana">
+    <div class="kpis" id="kpis"></div>
+    <div class="cols2">
+      <div class="card"><div class="card-title">Formatos que pegaron <i class="i" title="cantidad de piezas del top analizadas por Claude, agrupadas por formato. Solo cuenta piezas con análisis.">i</i></div><div id="t-formatos"></div></div>
+      <div class="card"><div class="card-title">Hooks repetidos <i class="i" title="mismo patrón de gancho usado por 2 o más cuentas distintas esta semana. Señal de tendencia.">i</i></div><div id="t-hooks"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Piezas <span class="sub" id="top-n"></span> <i class="i" title="todas las piezas del período elegido (hasta 30 días), no solo las más comentadas: los carruseles de casos tienen pocos comentarios por diseño y antes quedaban afuera. Objetivo = alcance / lead magnet / gatillo, lo clasifica Claude desde caption y guion. Outlier = views de la pieza sobre la mediana de views de su cuenta (últimas 30). Tasa = comentarios / views. Score = ranking compuesto 50% comentarios, 30% outlier, 20% tasa. Sin dato = —">i</i></div>
+      <div class="filters">
+        <div class="gl-seg" id="f-per" title="período por fecha de publicación"><button data-p="sem">Esta semana</button><button data-p="7">7 d</button><button data-p="30">30 d</button></div>
+        <input id="f-q" placeholder="buscar en caption o cuenta">
+        <select id="f-cuenta"><option value="">todas las cuentas</option></select>
+        <select id="f-media"><option value="">todo formato</option><option value="reel">reel</option><option value="carrusel">carrusel</option><option value="post">post</option></select>
+        <select id="f-obj"><option value="">todo objetivo</option><option value="alcance">alcance</option><option value="lead_magnet">lead magnet</option><option value="gatillo">gatillo</option></select>
+        <select id="f-tipo"><option value="">todo tipo</option><option>tofu</option><option>problema</option><option>solucion</option><option>producto</option><option>mentalidad</option></select>
+        <select id="f-rec"><option value="">recreable: todas</option><option value="1">solo recreables</option><option value="done">ya recreadas</option></select>
+        <label class="chip" style="cursor:pointer" title="las cuentas con tag 'propia' (la nuestra) sirven de baseline, no se recrean"><input type="checkbox" id="f-propia"> incluir propias</label>
+        <select id="f-orden"><option value="comentarios">orden: comentarios</option><option value="outlier">orden: outlier</option><option value="tasa_com">orden: tasa</option><option value="score">orden: score</option><option value="views">orden: views</option><option value="velocidad">orden: com/día</option></select>
+      </div>
+      <div class="scroll-x"><table class="tbl" id="tabla"><thead><tr>
+        <th>#</th><th></th><th>Cuenta</th><th>Pieza</th><th class="r" title="comentarios">Com</th><th class="r">Views</th><th class="r" title="comentarios / views">Tasa</th><th class="r" title="views vs mediana de la cuenta">Outlier</th><th class="r">Score</th><th>Análisis</th>
+      </tr></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-grilla">
+    <div class="card">
+      <div class="card-title">Grilla <span class="sub" id="grid-n"></span> <i class="i" title="mismos filtros que Semana. El número grande es comentarios; el chip de arriba, el puesto en el orden elegido.">i</i></div>
+      <div class="filters">
+        <div class="gl-seg" id="g-per" title="período por fecha de publicación"><button data-p="sem">Esta semana</button><button data-p="7">7 d</button><button data-p="30">30 d</button></div>
+        <input id="g-q" placeholder="buscar en caption o cuenta">
+        <select id="g-cuenta"><option value="">todas las cuentas</option></select>
+        <select id="g-media"><option value="">todo formato</option><option value="reel">reel</option><option value="carrusel">carrusel</option><option value="post">post</option></select>
+        <select id="g-obj"><option value="">todo objetivo</option><option value="alcance">alcance</option><option value="lead_magnet">lead magnet</option><option value="gatillo">gatillo</option></select>
+        <select id="g-rec"><option value="">recreable: todas</option><option value="1">solo recreables</option><option value="done">ya recreadas</option></select>
+        <select id="g-orden"><option value="comentarios">orden: comentarios</option><option value="outlier">orden: outlier</option><option value="views">orden: views</option><option value="score">orden: score</option></select>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-cuentas">
+    <div class="acc-head"><select id="acc-sel"></select><span class="chip" id="acc-meta">—</span></div>
+    <div id="acc-wrap"><div class="empty">Sin cuentas con piezas en los últimos 30 días.</div></div>
+  </section>
+
+  <section class="view" id="v-guion">
+    <div class="acc-head">
+      <select id="gl-cuenta" title="cuentas con 15+ reels etiquetados (regla de creator-lab)"></select>
+      <select id="gl-dim"></select>
+      <div class="gl-seg" id="gl-dias" title="período por fecha de publicación del reel"><button data-d="30">30 d</button><button data-d="90">90 d</button><button data-d="180">180 d</button><button data-d="365">365 d</button><button data-d="0">Todo</button></div>
+      <div class="gl-seg" id="gl-obj" title="objetivo de la pieza (lo clasifica Claude desde caption y guion, sin métricas): cada uno se mide con su propia vara"><button data-o="">Todos</button><button data-o="alcance">Alcance</button><button data-o="lead_magnet">Lead magnet</button><button data-o="gatillo">Gatillo</button></div>
+      <span class="chip" id="gl-meta">—</span>
+      <i class="i" title="Anatomía del guion con el schema de creator-lab (9 dimensiones). El clasificador lee solo lo que se dice en el reel, sin métricas: las etiquetas se cruzan con la performance después. Rel = vistas del reel / mediana de vistas de los reels de su cuenta en ese trimestre (1x = reel normal de esa cuenta). Vistas públicas, leídas por Apify.">i</i>
+    </div>
+    <div id="gl-wrap"><div class="empty">Sin reels etiquetados todavía. Hacen falta reels con voz ya transcriptos y analizados.</div></div>
+  </section>
+
+  <section class="view" id="v-historias">
+    <div class="acc-head">
+      <select id="hs-cuenta"></select>
+      <div class="gl-seg" id="hs-dias" title="período por fecha de publicación"><button data-d="1">24 h</button><button data-d="7">7 d</button><button data-d="30">30 d</button><button data-d="0">Todo</button></div>
+      <select id="hs-orden" style="background:var(--surface2);border:1px solid var(--line-strong);color:var(--ink);padding:8px 12px;border-radius:var(--r-s);font:600 13px Inter"><option value="fecha">orden: más nuevas</option><option value="respuestas">orden: respuestas</option><option value="alcance">orden: alcance</option><option value="resp_k">orden: respuestas/1K</option></select>
+      <span class="chip" id="hs-meta">—</span>
+      <i class="i" title="Capturadas antes de que venzan (24 h). Cuenta propia: Graph API cada 6 h (alcance, respuestas, avances, salidas; queda la última lectura antes de vencer). Cuentas de Semillas: Apify (frame, texto en pantalla, audio transcripto, stickers). Las métricas de las historias ajenas no son públicas: solo las tiene la cuenta propia. Respuestas = DMs a la historia.">i</i>
+    </div>
+    <div id="hs-wrap"><div class="empty">Sin historias capturadas todavía.</div></div>
+  </section>
+
+  <section class="view" id="v-semillas">
+    <div class="card">
+      <div class="card-title">Cuentas semilla <span class="sub" id="sem-n"></span> <i class="i" title="se agregan y se pausan desde acá. Baseline = mediana de views/likes de las últimas 30 piezas de la cuenta (sin las fijadas).">i</i></div>
+      <div class="alta" id="alta" style="display:none">
+        <input class="h" id="a-h" placeholder="@usuario o link del perfil (podés pegar varios, separados por coma o espacio)">
+        <select id="a-t"><option value="referente">referente</option><option value="competencia">competencia</option><option value="nicho">nicho</option><option value="propia">propia</option></select>
+        <label class="chip" style="cursor:pointer" title="capturar también sus historias, todos los días"><input type="checkbox" id="a-s" checked> historias</label>
+        <input id="a-n" placeholder="nota (opcional)">
+        <button class="btn" id="a-b">Agregar cuenta</button>
+      </div>
+      <div class="scroll-x"><table class="tbl" id="t-semillas"><thead><tr><th>Cuenta</th><th>Tags</th><th class="r">Seguidores</th><th class="r">Piezas sem</th><th class="r">Com sem</th><th class="r">Bangers</th><th class="r">Mediana views</th><th class="r">Baseline n</th><th>Historias</th><th>Nota</th><th></th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Conexiones y corridas <i class="i" title="qué fuentes están conectadas y las últimas corridas del Radar, con lo que trajo y lo que costó cada una">i</i></div>
+      <div id="est-wrap"><div class="muted">cargando…</div></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-comentarios">
+    <div id="com-wrap"></div>
+  </section>
+
+  <section class="view" id="v-competencia">
+    <div class="empty">Competencia semanal: diferencias por competidor semana contra semana y anuncios activos (Ad Library). Todavía no está armado.</div>
+  </section>
+</main>
+
+<aside id="drawer" aria-hidden="true"></aside>
+<div class="flash" id="flash"></div>
+<footer id="foot"></footer>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf = new Intl.NumberFormat('es-AR');
+const num = v => (v === null || v === undefined || Number.isNaN(v)) ? '—' : nf.format(v);
+const xf = v => (v === null || v === undefined) ? '—' : (Math.round(v*10)/10).toLocaleString('es-AR') + 'x';
+const pct = v => (v === null || v === undefined) ? '—' : (v*100).toLocaleString('es-AR',{maximumFractionDigits:1}) + '%';
+const ddmm = s => s ? s.slice(8,10)+'/'+s.slice(5,7) : '—';
+let D = null, STATE = { orden:'comentarios', q:'', cuenta:'', media:'', tipo:'', rec:'', propia:false, per:'sem', obj:'', verT:100, verG:60 };
+const propias = () => new Set((D?.semillas||[]).filter(s=>(s.tags||[]).includes('propia')).map(s=>s.handle));
+
+// La cuenta propia sale de las semillas con tag "propia". PROPIA es la principal; PROPIAS, todas.
+let PROPIA = '', PROPIAS = new Set(), E = null;
+// El nombre de la marca llega en /api/radar/datos (campo "marca"); sin él, los textos dicen "nuestra marca".
+let MARCA = 'nuestra marca';
+function ponerMarca(m){
+  const nombre = String(m || '').trim();
+  MARCA = nombre || 'nuestra marca';
+  GL_DIMS.tema_bm = nombre ? 'Tema de ' + nombre : 'Tema de la marca';
+  if(nombre){ document.title = 'Radar de contenido · ' + nombre; $('#brand-sub').textContent = '· ' + nombre; }
+}
+const DET = new Map();
+
+async function api(path, opts){
+  const r = await fetch(path, { credentials:'same-origin', cache:'no-store', ...(opts||{}) });
+  let j = null; try{ j = await r.json(); }catch(e){}
+  if(r.status === 401) throw new Error('la sesión venció: recargá la página');
+  if(!r.ok) throw new Error((j && j.error) || ('http '+r.status));
+  return j;
+}
+const accion = body => api('/api/radar/accion', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(body) });
+const gestiona = () => !!(E && E.yo && E.yo.gestiona);
+
+function flash(m, err){ const f=$('#flash'); f.textContent=m; f.style.borderColor = err?'var(--red)':'var(--line-strong)'; f.classList.add('on'); setTimeout(()=>f.classList.remove('on'), 2200); }
+
+async function load(){
+  try{
+    D = await api('/api/radar/datos');
+  }catch(e){
+    $('#kpis').innerHTML = `<div class="empty">No pude leer los datos del Radar (${esc(e.message)}).</div>`;
+    return;
+  }
+  PROPIAS = propias(); PROPIA = [...PROPIAS][0] || '';
+  ponerMarca(D.marca);
+  if(!GL.cuenta) GL.cuenta = PROPIA ? '@'+PROPIA : '';
+  loadEstado();
+  $('#c-sem').textContent = 'semana ' + D.semana;
+  $('#c-corte').textContent = 'corte ' + (D.fuentes?.corte || D.generado.slice(0,16).replace('T',' '));
+  $('#c-demo').style.display = D.demo ? '' : 'none';
+  syncFiltros(); renderKpis(); renderTendencias(); fillCuentas(); renderTabla(); renderGrid(); renderSemillas(); renderComentarios(); loadCuentas(); loadGuion(); loadHistorias();
+  $('#foot').textContent = `Fuentes: ${D.fuentes?.piezas || '—'} · análisis ${D.fuentes?.analisis || '—'} · generado ${new Date(D.generado).toLocaleString('es-AR')}`;
+}
+
+function renderKpis(){
+  const ps = filtradas();
+  const k = { piezas: ps.length, cuentas: new Set(ps.map(p => p.cuenta)).size, bangers: ps.filter(p => (p.outlier ?? 0) >= 3).length,
+    comentarios: ps.reduce((s, p) => s + (p.comentarios || 0), 0), analizadas: ps.filter(p => p.analisis).length,
+    recreables: ps.filter(p => p.analisis?.recreable).length, recreadas: ps.filter(p => p.recreacion).length,
+    con_views: ps.filter(p => p.views).length, cuentas_con_baseline: D.kpis?.cuentas_con_baseline };
+  const tiles = [
+    ['Piezas', k.piezas, `${k.cuentas ?? '—'} cuentas`, null, 'piezas publicadas en el período por las cuentas semilla, con los filtros aplicados'],
+    ['Bangers', k.bangers, `≥ 3x la mediana de su cuenta`, k.bangers>0?'ok':null, `piezas con outlier ≥ 3x. Cobertura: ${k.con_views ?? '—'} de ${k.piezas ?? '—'} piezas con views y ${k.cuentas_con_baseline ?? '—'} de ${k.cuentas ?? '—'} cuentas con baseline`],
+    ['Comentarios', k.comentarios, 'suma del período', null, 'suma de commentsCount de las piezas filtradas'],
+    ['Analizadas', k.analizadas, `${k.recreables ?? '—'} recreables`, null, 'piezas del top con análisis de Claude'],
+    ['Recreadas', k.recreadas, 'guion + carrusel + historias', k.recreadas>0?'ok':null, 'piezas con recreación generada'],
+  ];
+  $('#kpis').innerHTML = tiles.map(([l,v,s,sem,t]) => `<div class="kpi" ${sem?`data-sem="${sem}"`:''} title="${esc(t)}"><div class="kpi-label">${l}</div><div class="kpi-value">${num(v)}</div><div class="kpi-sub">${esc(s)}</div></div>`).join('');
+}
+
+function renderTendencias(){
+  const t = D.tendencias || {};
+  const f = Object.entries(t.formatos || {});
+  const max = Math.max(1, ...f.map(x=>x[1]));
+  $('#t-formatos').innerHTML = f.length ? f.slice(0,8).map(([k,v]) => `<div class="barra-row"><span>${esc(k.replace(/_/g,' '))}</span><div class="barra-track"><div class="barra-fill" style="width:${Math.round(v/max*100)}%"></div></div><span class="barra-val">${v}</span></div>`).join('')
+    : `<div class="empty">Sin piezas analizadas esta semana todavía.</div>`;
+  const h = Object.entries(t.hooks_repetidos || {});
+  $('#t-hooks').innerHTML = h.length ? `<table class="tbl"><tbody>${h.slice(0,8).map(([k,c]) => `<tr><td>${esc(k)}</td><td class="r muted">${c.length} cuentas</td></tr>`).join('')}</tbody></table>`
+    : `<div class="empty">Ningún hook repetido en 2+ cuentas${f.length?'':' (falta análisis)'}.</div>`;
+}
+
+function fillCuentas(){
+  const cs = [...new Set((D.piezas||[]).map(p=>p.cuenta))].sort();
+  const opts = '<option value="">todas las cuentas</option>' + cs.map(c=>`<option>${esc(c)}</option>`).join('');
+  $('#f-cuenta').innerHTML = opts; $('#g-cuenta').innerHTML = opts;
+}
+
+function filtradas(){
+  let ps = (D.piezas || []).slice();
+  const s = STATE;
+  if(!s.propia){ const pr = propias(); ps = ps.filter(p => !pr.has(p.cuenta) && !pr.has(p.cuenta_fuente)); }
+  if(s.q){ const q=s.q.toLowerCase(); ps = ps.filter(p => (p.caption||'').toLowerCase().includes(q) || p.cuenta.includes(q)); }
+  if(s.per === 'sem') ps = ps.filter(p => p.semana === D.semana);
+  else { const t = new Date(Date.now() - (+s.per) * 864e5).toISOString().slice(0,10); ps = ps.filter(p => (p.fecha||'').slice(0,10) >= t); }
+  if(s.obj) ps = ps.filter(p => p.objetivo?.objetivo === s.obj);
+  if(s.cuenta) ps = ps.filter(p => p.cuenta===s.cuenta || p.cuenta_fuente===s.cuenta);
+  if(s.media) ps = ps.filter(p => p.tipo_media===s.media);
+  if(s.tipo) ps = ps.filter(p => p.analisis?.tipo===s.tipo);
+  if(s.rec==='1') ps = ps.filter(p => p.analisis?.recreable);
+  if(s.rec==='done') ps = ps.filter(p => p.recreacion);
+  ps.sort((a,b) => ((b[s.orden] ?? -Infinity) - (a[s.orden] ?? -Infinity)));
+  return ps;
+}
+
+function renderGrid(){
+  const ps = filtradas();
+  $('#grid-n').textContent = `${ps.length} piezas`;
+  $('#grid').innerHTML = ps.slice(0, STATE.verG).map((p,i) => {
+    const a = p.analisis; const hot = (p.outlier ?? 0) >= 3;
+    return `<div class="gc" data-id="${esc(p.id)}">
+      <div class="gi">${p.thumb_local?`<img src="${esc(p.thumb_local)}" alt="" loading="lazy">`:`<div class="noimg">sin imagen</div>`}
+        <span class="rk">#${i+1}</span><span class="md">${esc(p.tipo_media)}</span>
+        <div class="ov"><b>${num(p.comentarios)}<small>com</small></b><span class="out ${hot?'hot':''}">${xf(p.outlier)}</span></div></div>
+      <div class="gb"><div class="cu">@${esc(p.cuenta)} <span class="muted" style="font-weight:400">· ${ddmm(p.fecha)}</span></div>
+        <div class="cap">${esc((p.caption||'').split('\n')[0])}</div>
+        <div class="tags">${p.objetivo?`<span class="tag" title="objetivo de la pieza">${esc(({alcance:'alcance',lead_magnet:'lead magnet',gatillo:'gatillo'})[p.objetivo.objetivo]||'')}${p.objetivo.keyword?' · '+esc(p.objetivo.keyword):''}</span>`:''}${a?`<span class="tag tipo">${esc(a.tipo)}</span><span class="tag">${esc((a.formato||'').replace(/_/g,' '))}</span>${a.recreable?'<span class="tag ok">recreable</span>':''}${p.recreacion?'<span class="tag ok">recreada</span>':''}`:''}</div></div></div>`;
+  }).join('') + (ps.length > STATE.verG ? `<div class="acts" style="grid-column:1/-1;justify-content:center"><button class="btn sec" id="g-mas">Ver ${Math.min(60, ps.length - STATE.verG)} más · quedan ${ps.length - STATE.verG}</button></div>` : '') || `<div class="empty">Nada con esos filtros.</div>`;
+  if($('#g-mas')) $('#g-mas').onclick = e => { e.stopPropagation(); STATE.verG += 60; renderGrid(); };
+}
+$('#grid').addEventListener('click', e => { const c = e.target.closest('.gc'); if(c) abrir(c.dataset.id); });
+['g-q','g-cuenta','g-media','g-rec','g-orden'].forEach(id => $('#'+id).addEventListener('input', e => {
+  const map = {'g-q':'q','g-cuenta':'cuenta','g-media':'media','g-rec':'rec','g-orden':'orden'};
+  STATE[map[id]] = e.target.value; STATE.verG = 60; syncFiltros(); renderKpis(); renderTabla(); renderGrid();
+}));
+
+function renderTabla(){
+  const ps = filtradas();
+  $('#top-n').textContent = `${ps.length} · por ${({comentarios:'comentarios',outlier:'outlier',tasa_com:'tasa',score:'score',views:'views',velocidad:'com/día'})[STATE.orden]||STATE.orden}`;
+  $('#tabla tbody').innerHTML = ps.slice(0, STATE.verT).map((p,i) => {
+    const a = p.analisis;
+    const tags = `${p.objetivo?`<span class="tag" title="objetivo de la pieza">${esc(({alcance:'alcance',lead_magnet:'lead magnet',gatillo:'gatillo'})[p.objetivo.objetivo]||'')}${p.objetivo.keyword?' · '+esc(p.objetivo.keyword):''}</span>`:''}` + (a ? `<span class="tag tipo">${esc(a.tipo)}</span><span class="tag">${esc((a.formato||'').replace(/_/g,' '))}</span>${a.recreable?`<span class="tag ok">recreable</span>`:''}${p.recreacion?`<span class="tag ok">recreada</span>`:''}${a.angulo_bm_id?`<span class="tag" title="${esc(a.angulo_bm_nombre)}">#${a.angulo_bm_id}</span>`:''}` : (p.objetivo ? '' : '<span class="muted">—</span>'));
+    const hot = (p.outlier ?? 0) >= 3;
+    return `<tr class="row ${p.views==null?'sin-dato':''}" data-id="${esc(p.id)}" title="${p.views==null?'sin views: outlier y tasa no calculables (post sin video o dato no público)':''}">
+      <td class="r muted">${i+1}</td>
+      <td>${p.thumb_local?`<img class="th" src="${esc(p.thumb_local)}" alt="" loading="lazy">`:`<div class="th"></div>`}</td>
+      <td><b>@${esc(p.cuenta)}</b>${p.cuenta_fuente && p.cuenta_fuente!==p.cuenta?`<br><span class="tag" title="colab publicada en el perfil semilla">vía @${esc(p.cuenta_fuente)}</span>`:''}<br><span class="muted">${esc(p.tipo_media)} · ${ddmm(p.fecha)}</span></td>
+      <td class="cap">${esc((p.caption||'').slice(0,110))}${(p.caption||'').length>110?'…':''}</td>
+      <td class="r"><b>${num(p.comentarios)}</b></td>
+      <td class="r">${num(p.views)}</td>
+      <td class="r">${pct(p.tasa_com)}</td>
+      <td class="r"><span class="out ${hot?'hot':''}">${xf(p.outlier)}</span></td>
+      <td class="r">${num(p.score)}</td>
+      <td>${tags}</td></tr>`;
+  }).join('') + (ps.length > STATE.verT ? `<tr><td colspan="10"><div class="acts" style="justify-content:center"><button class="btn sec" id="t-mas">Ver ${Math.min(100, ps.length - STATE.verT)} más · quedan ${ps.length - STATE.verT}</button></div></td></tr>` : '') || `<tr><td colspan="10"><div class="empty">Nada con esos filtros.</div></td></tr>`;
+  if($('#t-mas')) $('#t-mas').onclick = e => { e.stopPropagation(); STATE.verT += 100; renderTabla(); };
+}
+
+$('#tabla').addEventListener('click', e => { const tr = e.target.closest('tr.row'); if(tr) abrir(tr.dataset.id); });
+['f-q','f-cuenta','f-media','f-tipo','f-rec','f-orden','f-propia'].forEach(id => $('#'+id).addEventListener('input', e => {
+  const map = {'f-q':'q','f-cuenta':'cuenta','f-media':'media','f-tipo':'tipo','f-rec':'rec','f-orden':'orden','f-propia':'propia'};
+  STATE[map[id]] = id==='f-propia' ? e.target.checked : e.target.value; STATE.verT = 100; STATE.verG = 60; syncFiltros(); renderKpis(); renderTabla(); renderGrid();
+}));
+function syncFiltros(){
+  document.querySelectorAll('#f-per button, #g-per button').forEach(b => b.classList.toggle('on', b.dataset.p === STATE.per));
+  $('#f-obj').value = STATE.obj; $('#g-obj').value = STATE.obj;
+  if($('#f-cuenta').value !== STATE.cuenta) $('#f-cuenta').value = STATE.cuenta; if($('#g-cuenta').value !== STATE.cuenta) $('#g-cuenta').value = STATE.cuenta;
+}
+['f-per','g-per'].forEach(id => $('#'+id).addEventListener('click', e => { const b = e.target.closest('button'); if(!b) return;
+  STATE.per = b.dataset.p; STATE.verT = 100; STATE.verG = 60; syncFiltros(); renderKpis(); renderTabla(); renderGrid(); }));
+['f-obj','g-obj'].forEach(id => $('#'+id).addEventListener('input', e => { STATE.obj = e.target.value; STATE.verT = 100; STATE.verG = 60; syncFiltros(); renderKpis(); renderTabla(); renderGrid(); }));
+$('#tabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on', x===b));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on', v.id==='v-'+b.dataset.v));
+});
+
+let ABIERTA = '';
+function abrir(id){
+  const base = D.piezas.find(x=>x.id===id) || (C && C.piezas.find(x=>x.id===id)); if(!base) return;
+  ABIERTA = id;
+  pintarPieza(base, DET.get(id) || null);
+  if(!DET.has(id)) api('/api/radar/pieza?id='+encodeURIComponent(id)).then(d => { DET.set(id, d); if(ABIERTA === id) pintarPieza(base, d); }).catch(e => flash('Detalle: '+e.message, true));
+}
+function pintarPieza(base, det){
+  // la grilla trae la pieza sin lo pesado; el detalle suma transcript, slides leídas y recreación
+  const p = { ...base, ...(det ? { transcript: det.transcript, slides_local: det.slides_local, slides_texto: det.slides_texto, lectura: det.lectura, analisis: det.analisis || base.analisis, objetivo: det.objetivo || base.objetivo } : {}) };
+  const id = p.id;
+  const a = p.analisis, r = det ? det.recreacion : null;
+  const g = gestiona();
+  const mets = [['Comentarios',num(p.comentarios)],['Views',num(p.views)],['Likes',num(p.likes)],['Outlier',xf(p.outlier)],['Tasa',pct(p.tasa_com)],['Com/día',num(p.velocidad)],['Eng/seg',pct(p.eng_x_seg)],['Score',num(p.score)]];
+  let html = `<div class="dhead"><span class="chip">@${esc(p.cuenta)} · ${esc(p.tipo_media)} · ${ddmm(p.fecha)}</span><button class="x" onclick="cerrar()">cerrar ✕</button></div>
+    <h2>${esc((p.caption||'').split('\n')[0].slice(0,140)) || '(sin caption)'}</h2>
+    <div class="acts"><a class="btn sec" href="${esc(p.url)}" target="_blank" rel="noopener">Abrir en Instagram ↗</a>
+      ${g && a && !r && a.recreable ? `<button class="btn" id="b-rec" onclick="recrear('${esc(id)}')">Generar recreación</button>` : ''}
+    </div>
+    ${p.thumb_local?`<img class="dimg" src="${esc(p.thumb_local)}" alt="">`:''}
+    <div class="mets">${mets.map(([l,v])=>`<div class="met"><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+    <h3>Caption original</h3><pre class="copy">${esc(p.caption||'—')}</pre>`;
+  if(p.slides_local?.length){
+    const tx = p.slides_texto || [];
+    html += `<h3>Carrusel · ${p.slides_local.length} slides</h3><div class="slides">${p.slides_local.map((u,i)=>`<figure><img src="${esc(u)}" alt="slide ${i+1}" loading="lazy"><figcaption>${esc(tx[i]?.texto||'')}</figcaption></figure>`).join('')}</div>`;
+    if(p.lectura) html += `<p style="margin-top:8px"><b>Diseño:</b> ${esc(p.lectura.diseno)}</p><p><b>Estructura:</b> ${esc(p.lectura.estructura)}</p><p><b>Cierre:</b> ${esc(p.lectura.cierre)}</p>`;
+  } else if(p.slides_texto?.length){
+    html += `<h3>Carrusel · ${p.slides_texto.length} slides (texto leído)</h3><ol class="muted">${p.slides_texto.map(s=>`<li>${esc(s.texto)}${s.visual?` <i>· ${esc(s.visual)}</i>`:''}</li>`).join('')}</ol>`;
+    if(p.lectura) html += `<p style="margin-top:8px"><b>Diseño:</b> ${esc(p.lectura.diseno)}</p><p><b>Estructura:</b> ${esc(p.lectura.estructura)}</p><p><b>Cierre:</b> ${esc(p.lectura.cierre)}</p>`;
+  }
+  if(p.transcript) html += `<h3>Transcript${p.duracion?` · ${Math.round(p.duracion)}s`:''}</h3><pre class="copy">${esc(p.transcript)}</pre>`;
+  if(a){
+    html += `<h3>Análisis</h3>
+      <div><span class="tag tipo">${esc(a.tipo)}</span><span class="tag">${esc(a.formato)}</span><span class="tag">${esc(a.nivel_conciencia)}</span>${a.angulo_bm_id?`<span class="tag">ángulo #${a.angulo_bm_id} · ${esc(a.angulo_bm_nombre)}</span>`:'<span class="tag">sin ángulo del banco</span>'}<span class="tag ${a.recreable?'ok':'warn'}">${a.recreable?'recreable':'no recreable'}</span></div>
+      <p style="margin-top:8px"><b>Hook:</b> ${esc(a.hook_texto)} <span class="muted">· patrón: ${esc(a.hook_patron)}</span></p>
+      <p><b>Por qué pega:</b> ${esc(a.por_que_pega)}</p>
+      <p><b>Estructura:</b> ${(a.estructura||[]).map(esc).join(' → ')}</p>
+      <p><b>CTA:</b> ${esc(a.cta||'—')} · <b>keyword:</b> ${esc(a.keyword||'—')}${a.recurso_prometido?` · <b>recurso:</b> ${esc(a.recurso_prometido)}`:''}</p>
+      ${a.como_recrear?`<p><b>Cómo recrear para ${esc(MARCA)}:</b> ${esc(a.como_recrear)}</p>`:''}
+      ${g?`<div class="acts"><button class="btn sec" id="b-ana" onclick="analizar('${esc(id)}')">Volver a analizar</button></div>`:''}`;
+  } else {
+    html += `<h3>Análisis</h3><div class="empty">Sin análisis todavía${det&&det.analisis_error?': '+esc(det.analisis_error):'. Se analiza sola en la próxima pasada'}.</div>${g?`<div class="acts"><button class="btn" id="b-ana" onclick="analizar('${esc(id)}')">Analizar ahora</button></div>`:''}`;
+  }
+  if(r){
+    html += `<h3>Reel · ${esc(r.reel.titulo)} <span class="muted">(${r.reel.duracion_seg}s · ${esc(r.reel.formato_sugerido)})</span></h3>
+      <pre class="copy" id="cp-reel">${esc(r.reel.hook)}\n\n${r.reel.guion.map(b=>`[${b.beat}] ${b.texto}\n   visual: ${b.visual}`).join('\n')}\n\nCTA: ${esc(r.reel.cta)}\n\nCaption: ${esc(r.reel.caption)}</pre>
+      <div class="acts"><button class="btn sec" onclick="copiar('cp-reel')">Copiar guion</button></div>
+      <h3>Carrusel · ${esc(r.carrusel.titulo)} <span class="muted">(estilo ${esc(r.carrusel.estilo_sugerido)})</span></h3>
+      <pre class="copy" id="cp-car">${r.carrusel.slides.map(s=>`${s.n}. ${s.texto}\n   visual: ${s.visual}`).join('\n')}\n\nCaption: ${esc(r.carrusel.caption)}</pre>
+      <div class="acts"><button class="btn sec" onclick="copiar('cp-car')">Copiar carrusel</button></div>
+      <h3>Historias</h3>
+      <pre class="copy" id="cp-his">${r.historias.map(h=>`${h.n}. EN PANTALLA: ${h.en_pantalla}\n   HABLADO: ${h.hablado}\n   sticker: ${h.sticker}`).join('\n')}</pre>
+      <h3>Hooks alternativos</h3><pre class="copy">${r.hooks.map((h,i)=>`${i+1}. ${h}`).join('\n')}</pre>
+      <h3>Nota del estratega</h3><p>${esc(r.nota_estratega)}</p>
+      ${r.violaciones?.length?`<p class="muted">⚠ revisar antes de publicar: ${r.violaciones.map(esc).join(', ')}</p>`:''}`;
+  }
+  const d = $('#drawer'); d.innerHTML = html; d.classList.add('open'); d.setAttribute('aria-hidden','false');
+}
+function cerrar(){ const d=$('#drawer'); d.classList.remove('open'); d.setAttribute('aria-hidden','true'); ABIERTA = ''; }
+async function enPieza(id, boton, espera, body, listo){
+  const b = $('#'+boton); if(b){ b.disabled = true; b.textContent = espera; }
+  try{
+    const j = await accion(body);
+    if(j.pieza){ DET.set(id, j.pieza);
+      for(const lista of [D.piezas, C ? C.piezas : []]){ const p = lista.find(x=>x.id===id); if(p){ p.analisis = j.pieza.analisis || p.analisis; p.objetivo = j.pieza.objetivo || p.objetivo; p.recreacion = !!j.pieza.recreacion; } }
+      if(ABIERTA === id) abrir(id);
+      renderKpis(); renderTabla(); renderGrid(); }
+    flash(listo);
+  }catch(e){ flash(e.message, true); if(b){ b.disabled = false; b.textContent = 'Reintentar'; } }
+}
+const analizar = id => enPieza(id, 'b-ana', 'Analizando… (hasta 1 min)', { accion:'analizar', id }, 'Pieza analizada ✓');
+const recrear = id => enPieza(id, 'b-rec', 'Escribiendo la recreación… (1 a 2 min)', { accion:'recrear', id }, 'Recreación lista ✓');
+document.addEventListener('keydown', e => { if(e.key==='Escape') cerrar(); });
+function copiar(id){ navigator.clipboard.writeText($('#'+id).innerText).then(()=>flash('Copiado ✓')).catch(()=>flash('No pude copiar', true)); }
+
+
+// ═══ CUENTAS ═══
+let C = null, CSORT = 'comentarios';
+async function loadCuentas(){
+  let idx = {};
+  try{ idx = await api('/api/radar/cuentas'); }catch(e){}
+  const hs = Object.values(idx).sort((a,b)=>b.n-a.n);
+  if(!hs.length) return;
+  $('#acc-sel').innerHTML = hs.map(h=>`<option value="${esc(h.handle)}">@${esc(h.handle)} · ${h.dias} días</option>`).join('');
+  $('#acc-sel').onchange = e => loadCuenta(e.target.value);
+  loadCuenta(hs[0].handle);
+}
+async function loadCuenta(h){
+  try{ C = await api('/api/radar/cuentas?handle='+encodeURIComponent(h)); }
+  catch(e){ $('#acc-wrap').innerHTML = `<div class="empty">No pude leer la cuenta ${esc(h)}</div>`; return; }
+  renderCuenta();
+}
+function barras(obj, fmt){
+  const e = Object.entries(obj||{}); const max = Math.max(1, ...e.map(x=>x[1].n ?? x[1]));
+  return e.map(([k,v]) => { const n = v.n ?? v; return `<div class="barra-row"><span>${esc(String(k).replace(/_/g,' '))}</span><div class="barra-track"><div class="barra-fill" style="width:${Math.round(n/max*100)}%"></div></div><span class="barra-val">${fmt?fmt(v):n}</span></div>`; }).join('') || '<div class="empty">—</div>';
+}
+function renderCuenta(){
+  const g = C.agregados, pf = C.perfil || {};
+  $('#acc-meta').textContent = `${C.piezas.length} piezas · últimos ${C.dias} días · histórico ${num(C.historico?.n)} desde ${C.historico?.desde||'—'}`;
+  const tiles = [
+    ['Seguidores', num(pf.seguidores), ''],
+    ['Piezas', num(g.n), `${String(g.por_dia??'—').replace('.',',')} por día`],
+    ['Comentarios', num(g.com_total), `mediana ${num(g.med_com)} por pieza`],
+    ['Views reel', num(g.med_views_reel), 'mediana'],
+    ['Duración reel', g.dur_med_reel!=null?`${Math.round(g.dur_med_reel)}s`:'—', 'mediana'],
+    ['Transcriptos', `${num(g.con_transcript)}`, `${num(g.con_slides)} carruseles leídos`],
+  ];
+  const kw = (g.keywords||[]).slice(0,15);
+  const hk = (g.hooks||[]).slice(0,12);
+  const hmax = Math.max(1, ...Object.values(g.horas||{}));
+  const dos = C.dossier;
+  let html = `<div class="kpis">${tiles.map(([l,v,sub])=>`<div class="kpi"><div class="kpi-label">${l}</div><div class="kpi-value">${v}</div><div class="kpi-sub">${esc(sub)}</div></div>`).join('')}</div>`;
+  if(dos){
+    html += `<div class="card dos"><div class="card-title">Dossier · qué hace y qué le robamos</div>
+      ${dos.veredicto?`<p><b>${esc(dos.veredicto)}</b></p>`:''}
+      ${(dos.secciones||[]).map(sec=>`<h3 style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:14px 0 4px">${esc(sec.titulo)}</h3><ul>${(sec.items||[]).map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`).join('')}
+    </div>`;
+    if(dos.robar?.length){
+      html += `<div class="card"><div class="card-title">Para robar · traducido a ${esc(MARCA)} <span class="sub">${dos.robar.length} piezas</span> <i class="i" title="piezas de la cuenta traducidas al cliente ideal, a la oferta y a la voz de ${esc(MARCA)}, con las reglas de la casa. Click en la referencia abre la pieza original.">i</i></div>
+        <div class="scroll-x"><table class="tbl"><thead><tr><th>#</th><th>Pieza para ${esc(MARCA)}</th><th>Formato</th><th>Hook</th><th>Keyword</th><th>Referencia</th></tr></thead><tbody>
+        ${dos.robar.map((r,i)=>`<tr><td class="r muted">${i+1}</td><td><b>${esc(r.titulo)}</b><br><span class="muted">${esc(r.por_que||'')}</span></td><td>${esc(r.formato||'')}</td><td>${esc(r.hook||'')}</td><td><span class="tag">${esc(r.keyword||'—')}</span><br><span class="muted">${esc(r.recurso||'')}</span></td><td>${r.referencia_id?`<a href="#" onclick="abrir('${esc(r.referencia_id)}');return false">ver original</a>`:'—'}</td></tr>`).join('')}
+        </tbody></table></div></div>`;
+    }
+  }
+  if(gestiona()) html += `<div class="acts" style="margin:0 0 14px"><button class="btn sec" id="b-dos">${dos?'Rehacer el dossier':'Generar el dossier de la cuenta'}</button><span class="muted" style="align-self:center">qué hace y qué le robamos, sobre sus piezas analizadas de los últimos 30 días</span></div>`;
+  html += `<div class="cols2">
+    <div class="card"><div class="card-title">Keywords que farmean <i class="i" title="keyword del CTA (Comentá X). Comentarios totales y mediana por pieza en el período. Recurso = lo que promete a cambio.">i</i></div>
+      <div class="scroll-x"><table class="tbl"><thead><tr><th>Keyword</th><th class="r">Piezas</th><th class="r">Com total</th><th class="r">Mediana</th><th>Recurso</th></tr></thead><tbody>${kw.map(k=>`<tr><td><b>${esc(k.keyword)}</b></td><td class="r">${k.n}</td><td class="r">${num(k.com_total)}</td><td class="r">${num(k.med_com)}</td><td class="muted">${esc(k.recurso||'')}</td></tr>`).join('') || '<tr><td colspan="5" class="muted">sin análisis</td></tr>'}</tbody></table></div></div>
+    <div class="card"><div class="card-title">Patrones de hook <i class="i" title="patrón abstracto del gancho según el análisis de cada pieza. Piezas que lo usan y mediana de comentarios.">i</i></div>
+      <div class="scroll-x"><table class="tbl"><thead><tr><th>Patrón</th><th class="r">Piezas</th><th class="r">Mediana com</th></tr></thead><tbody>${hk.map(k=>`<tr><td>${esc(k.patron)}</td><td class="r">${k.n}</td><td class="r">${num(k.med_com)}</td></tr>`).join('') || '<tr><td colspan="3" class="muted">sin análisis</td></tr>'}</tbody></table></div></div>
+  </div>
+  <div class="cols2">
+    <div class="card"><div class="card-title">Formato · piezas y mediana de comentarios</div>${barras(g.formatos, v=>`${v.n} · ${num(v.med_com)}`)}
+      <div class="card-title" style="margin-top:14px">Tipo de contenido</div>${barras(g.tipos)}</div>
+    <div class="card"><div class="card-title">Hora de publicación <i class="i" title="hora Argentina, piezas publicadas en el período">i</i></div>
+      <div class="hrow">${Array.from({length:24},(_,h)=>`<div title="${h}h · ${g.horas?.[h]||0} piezas" style="height:${Math.round((g.horas?.[h]||0)/hmax*100)}%"></div>`).join('')}</div>
+      <div class="hlab">${Array.from({length:24},(_,h)=>`<span>${h%3===0?h:''}</span>`).join('')}</div>
+      <div class="card-title" style="margin-top:14px">Día de la semana</div>${barras(g.dias_semana)}</div>
+  </div>
+  <div class="card"><div class="card-title">Todas las piezas <span class="sub">${C.piezas.length}</span>
+      <select id="acc-sort" style="margin-left:auto;background:var(--surface2);border:1px solid var(--line);color:var(--ink);padding:6px 9px;border-radius:8px;font:12.5px Inter"><option value="comentarios">orden: comentarios</option><option value="fecha">orden: fecha</option><option value="views">orden: views</option><option value="likes">orden: likes</option></select></div>
+    <div class="grid" id="acc-grid"></div></div>`;
+  $('#acc-wrap').innerHTML = html;
+  $('#acc-sort').value = CSORT;
+  $('#acc-sort').onchange = e => { CSORT = e.target.value; renderAccGrid(); };
+  $('#acc-grid').onclick = e => { const c = e.target.closest('.gc'); if(c) abrir(c.dataset.id); };
+  if($('#b-dos')) $('#b-dos').onclick = async () => { const b = $('#b-dos'); b.disabled = true; b.textContent = 'Armando el dossier… (1 a 2 min)';
+    try{ const j = await accion({ accion:'dossier', handle: C.handle }); C.dossier = j.dossier; renderCuenta(); flash('Dossier listo ✓'); }
+    catch(e){ flash(e.message, true); b.disabled = false; b.textContent = 'Reintentar'; } };
+  renderAccGrid();
+}
+function renderAccGrid(){
+  const ps = C.piezas.slice().sort((a,b)=> CSORT==='fecha' ? (b.fecha||'').localeCompare(a.fecha||'') : ((b[CSORT]??-1)-(a[CSORT]??-1)));
+  $('#acc-grid').innerHTML = ps.map((p,i)=>{ const a=p.analisis; const hot=(p.outlier_com??0)>=3;
+    return `<div class="gc" data-id="${esc(p.id)}"><div class="gi">${p.thumb_local?`<img src="${esc(p.thumb_local)}" alt="" loading="lazy">`:`<div class="noimg">sin imagen</div>`}
+      <span class="rk">#${i+1}</span><span class="md">${esc(p.tipo_media)}${p.n_slides?` · ${p.n_slides}`:''}${p.duracion?` · ${Math.round(p.duracion)}s`:''}</span>
+      <div class="ov"><b>${num(p.comentarios)}<small>com</small></b><span class="out ${hot?'hot':''}" title="comentarios vs mediana histórica de la cuenta">${xf(p.outlier_com)}</span></div></div>
+      <div class="gb"><div class="cu">${ddmm(p.fecha)}${p.fijado?' · fijado':''}${a?.keyword?` · <span class="muted">${esc(a.keyword)}</span>`:''}</div>
+      <div class="cap">${esc(a?.hook_texto || (p.caption||'').split('\n')[0])}</div>
+      <div class="tags">${a?`<span class="tag tipo">${esc(a.tipo)}</span><span class="tag">${esc((a.formato||'').replace(/_/g,' '))}</span>`:''}${p.con_transcript?'<span class="tag">transcript</span>':''}${p.slides_leidas?'<span class="tag">slides leídas</span>':''}</div></div></div>`; }).join('');
+}
+
+// ═══ GUION (creator-lab) ═══
+let G = null;
+const GL = { cuenta:'', dim:'mechanism', sel:'', orden:'rel', ver:48, dias:0, obj:'' };
+try{ const g = JSON.parse(localStorage.getItem('radar-gl') || '{}'); if([0,30,90,180,365].includes(g.dias)) GL.dias = g.dias; }catch(e){}
+const GL_MIN = 15, GL_CHICA = 5;
+const GL_DIMS = { mechanism:'Hook', opening:'Apertura', structure:'Estructura', evidence:'Evidencia', tema_bm:'Tema de la marca', emotion:'Emoción', specificity:'Especificidad', cta:'CTA hablado', topic:'Tema' };
+const GL_ES = {
+  mechanism:{contradiction:'contradicción',curiosity:'curiosidad',result:'resultado',mistake:'error / riesgo',recognition:'identificación',story:'historia',direct:'directo'},
+  opening:{question:'pregunta',instruction:'instrucción',claim:'afirmación',story:'relato',dialogue:'diálogo'},
+  structure:{story:'historia',steps:'pasos',problem_solution:'problema-solución',explanation:'explicación',comparison:'comparación',opinion:'opinión',qa:'pregunta-respuesta'},
+  evidence:{example:'ejemplo',personal:'experiencia propia',numbers:'números',source:'fuente externa',reasoning:'razonamiento',none:'sin respaldo'},
+  emotion:{aspiration:'aspiración',concern:'miedo / riesgo',relief:'alivio',surprise:'sorpresa',amusement:'humor',neutral:'neutral'},
+  specificity:{none:'sin consejo',principle:'principio',action:'acción',sequence:'secuencia'},
+  cta:{none:'sin CTA',follow:'seguir',engage:'like / guardar',comment:'comentar',visit:'visitar link',buy:'comprar / agendar',multiple:'varios'},
+  topic:{business:'negocio',money:'plata',marketing:'marketing',mindset:'mentalidad',habits:'hábitos',relationships:'relaciones',health:'salud',technology:'tecnología',other:'otro'},
+  tema_bm:{herramientas:'herramientas',oferta:'oferta y precios',clientes:'conseguir clientes',caso:'caso de cliente',operacion:'detrás de escena',educacion:'enseñanza',estilo_vida:'estilo de vida',mindset:'mentalidad',otro:'otro'},
+};
+const glLab = (d, v) => v==='unclear' ? 'sin clasificar' : (GL_ES[d]?.[v] || String(v).replace(/_/g,' '));
+const glMed = a => { const s = a.filter(v=>v!=null&&isFinite(v)).sort((x,y)=>x-y); if(!s.length) return null; const m = (s.length-1)/2; return (s[Math.floor(m)]+s[Math.ceil(m)])/2; };
+const relf = v => v==null ? '—' : (v<10 ? v.toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2}) : Math.round(v).toLocaleString('es-AR')) + 'x';
+const d1 = v => v==null ? '—' : v.toLocaleString('es-AR',{maximumFractionDigits:1});
+const ddmmaa = f => f ? `${ddmm(f)}/${f.slice(2,4)}` : '—';
+const glCorte = () => GL.dias ? new Date(Date.now() - GL.dias * 864e5).toISOString().slice(0,10) : '';
+const glVentana = c => { const t = glCorte(); return (G.cuentas[c] || []).filter(r => !t || r.fecha >= t); };
+
+async function loadGuion(){
+  try{ G = await api('/api/radar/guion'); }catch(e){ return; }
+  const cs = Object.entries(G.cuentas).filter(([,v]) => v.length >= GL_MIN);
+  const fuera = Object.entries(G.cuentas).filter(([,v]) => v.length < GL_MIN);
+  if(!cs.length) return;
+  if(!G.cuentas[GL.cuenta] || G.cuentas[GL.cuenta].length < GL_MIN) GL.cuenta = cs[0][0];
+  $('#gl-cuenta').innerHTML = cs.map(([c,v]) => `<option value="${esc(c)}">${esc(c)} · ${v.length} reels</option>`).join('');
+  $('#gl-cuenta').title = `cuentas con ${GL_MIN}+ reels etiquetados` + (fuera.length ? `. Fuera por muestra chica: ${fuera.map(([c,v])=>`${c} (${v.length})`).join(', ')}` : '');
+  $('#gl-dim').innerHTML = Object.entries(GL_DIMS).map(([k,l]) => `<option value="${k}">${l}</option>`).join('');
+  $('#gl-cuenta').value = GL.cuenta; $('#gl-dim').value = GL.dim;
+  $('#gl-cuenta').onchange = e => { GL.cuenta = e.target.value; GL.sel = ''; GL.ver = 48; renderGuion(); };
+  $('#gl-dim').onchange = e => { GL.dim = e.target.value; GL.sel = ''; GL.ver = 48; renderGuion(); };
+  $('#gl-obj').onclick = e => { const b = e.target.closest('button'); if(!b) return; GL.obj = b.dataset.o; GL.sel = ''; GL.ver = 48; GL.orden = GL.obj === 'lead_magnet' ? 'leads' : 'rel'; renderGuion(); };
+  $('#gl-dias').onclick = e => { const b = e.target.closest('button'); if(!b) return; GL.dias = +b.dataset.d; GL.ver = 48;
+    try{ localStorage.setItem('radar-gl', JSON.stringify({dias: GL.dias})); }catch(err){} renderGuion(); };
+  renderGuion();
+}
+
+const GL_OBJ = { '':'Todos', alcance:'Alcance', lead_magnet:'Lead magnet', gatillo:'Gatillo' };
+// métrica según objetivo: lead magnet = leads (usuarios únicos que comentaron la keyword) cada 1K vistas; resto = Rel
+const glLeads = () => GL.obj === 'lead_magnet';
+const glMet = (r, c) => !glLeads() ? r.rel : (c === '@'+PROPIA ? (r.kk ?? r.com_k) : r.com_k);
+function glGrupos(reels, d, c){
+  const vals = reels.map(r => glMet(r, c)).filter(v => v != null);
+  const base = glLeads() ? glMed(vals.filter(v => v > 0)) : 1;
+  const g = {};
+  for(const r of reels){ if(glMet(r, c) != null) (g[r[d]] ||= []).push(r); }
+  return Object.entries(g).map(([k, rs]) => { const ms = rs.map(r => glMet(r, c));
+      return { k, n: rs.length, raw: glMed(ms), rel: base ? glMed(ms.map(v => Math.max(v, 0.001) / base)) : null, com: glMed(rs.map(r=>r.com_k)) }; })
+    .sort((a,b) => ((a.k==='unclear') - (b.k==='unclear')) || ((b.n>=GL_CHICA) - (a.n>=GL_CHICA)) || ((b.rel??-1) - (a.rel??-1)));
+}
+
+// posición en la barra: escala log2 de 0,25x a 4x, 1x al centro
+const glPos = v => 50 + Math.max(-2, Math.min(2, Math.log2(Math.max(v, 0.001)))) / 2 * 50;
+
+function renderGuion(){
+  const d = GL.dim, esPropia = GL.cuenta === '@'+PROPIA, L = glLeads();
+  const todas = G.cuentas[GL.cuenta] || [];
+  const reels = glVentana(GL.cuenta).filter(r => !GL.obj || r.obj === GL.obj);
+  document.querySelectorAll('#gl-dias button').forEach(b => b.classList.toggle('on', +b.dataset.d === GL.dias));
+  document.querySelectorAll('#gl-obj button').forEach(b => b.classList.toggle('on', b.dataset.o === GL.obj));
+  const grupos = glGrupos(reels, d, GL.cuenta);
+  const prop = (esPropia || !PROPIA || !G.cuentas['@'+PROPIA]) ? null : Object.fromEntries(glGrupos(glVentana('@'+PROPIA).filter(r => !GL.obj || r.obj === GL.obj), d, '@'+PROPIA).map(x => [x.k, x]));
+  const validos = grupos.filter(x => x.n >= GL_CHICA && x.k !== 'unclear' && x.rel != null);
+  const mejor = validos[0], peor = validos.length > 1 ? validos[validos.length-1] : null;
+  const sel = grupos.find(x => x.k === GL.sel);
+  const conMet = reels.filter(r => glMet(r, GL.cuenta) != null).length;
+  const fs = reels.map(r=>r.fecha).sort(), ult = todas.map(r=>r.fecha).sort().pop();
+  const meta = $('#gl-meta');
+  meta.textContent = reels.length ? `${reels.length} reels · ${ddmmaa(fs[0])} → ${ddmmaa(fs[fs.length-1])}${L && conMet < reels.length ? ` · ${conMet} con comentarios` : ''}${reels.length < GL_MIN ? ' · muestra chica' : ''}` : 'sin reels';
+  meta.title = `último reel etiquetado de ${GL.cuenta}: ${ddmmaa(ult)}`;
+  const tile = (l, v, s, t) => `<div class="kpi" title="${esc(t)}"><div class="kpi-label">${esc(l)}</div><div class="kpi-value">${v}</div><div class="kpi-sub">${s}</div></div>`;
+  const propSub = x => (!prop || !x || !prop[x.k]) ? '' : ` · @${PROPIA} ${relf(prop[x.k].rel)}`;
+  const unidad = L ? (esPropia ? 'leads/1K' : 'com/1K') : 'Rel';
+  const tipM = L ? (esPropia ? 'leads cada 1.000 vistas (usuarios únicos que comentaron la keyword) contra la mediana de los lead magnets de la cuenta en el período' : 'comentarios cada 1.000 vistas contra la mediana de la cuenta (aproximación: de la competencia no bajamos quién comentó)') : 'Rel = vistas del reel / mediana de su cuenta en el trimestre';
+  let html = `<div class="kpis">
+    ${tile('Reels', num(reels.length), `${GL.obj ? esc(GL_OBJ[GL.obj].toLowerCase()) + ' · ' : ''}${GL.dias ? `últimos ${GL.dias} días` : 'todo el período'}`, 'reels con guion etiquetado en el período y objetivo elegidos')}`;
+  if(L && esPropia){
+    const leads = reels.reduce((s, r) => s + (r.ku || 0), 0);
+    html += tile('Leads captados', num(leads), `${d1(glMed(reels.map(r => r.kk).filter(v => v != null)))} cada 1K vistas (mediana)`, 'usuarios únicos que comentaron la keyword, sobre los comentarios que se bajaron de cada reel.');
+  }
+  html += `${tile(`Mejor ${GL_DIMS[d].toLowerCase()}`, mejor ? relf(mejor.rel) : '—', mejor ? `${esc(glLab(d, mejor.k))} · ${mejor.n} reels${propSub(mejor)}` : `sin etiqueta con ${GL_CHICA}+ reels`, `etiqueta con ${unidad} relativo más alto (${GL_CHICA}+ reels)`)}
+    ${tile(`Peor ${GL_DIMS[d].toLowerCase()}`, peor ? relf(peor.rel) : '—', peor ? `${esc(glLab(d, peor.k))} · ${peor.n} reels${propSub(peor)}` : '—', `etiqueta con ${unidad} relativo más bajo (${GL_CHICA}+ reels)`)}
+  </div>`;
+  if(!reels.length){
+    $('#gl-wrap').innerHTML = html + `<div class="empty">Sin reels${GL.obj ? ' de ' + esc(GL_OBJ[GL.obj].toLowerCase()) : ''} de ${esc(GL.cuenta)} en el período. Último etiquetado: ${ddmmaa(ult)}.</div>`;
+    return;
+  }
+  const defs = G.dims[d]?.etiquetas || {};
+  const ticks = [0.25, 0.5, 1, 2, 4];
+  const rawf = v => L ? d1(v) : relf(v);
+  html += `<div class="card"><div class="card-title">Qué rinde · ${esc(GL_DIMS[d].toLowerCase())}${GL.obj ? ` <span class="sub">${esc(GL_OBJ[GL.obj].toLowerCase())} · medido en ${unidad}</span>` : ''} <i class="i" title="${esc(tipM)}. La barra sale de 1x (lo normal): a la derecha rinde más, a la izquierda menos. Escala log, tope 0,25x y 4x. Mediana por etiqueta. Filas atenuadas: menos de ${GL_CHICA} reels.${prop ? ' Raya blanca: la cuenta propia con la misma etiqueta, objetivo y período.' : ''}">i</i>
+      ${prop ? '<span class="gl-ley"><span class="gl-ley-bar"></span>' + esc(GL.cuenta) + '<span class="gl-ley-prop"></span>@' + esc(PROPIA) + '</span>' : ''}</div>
+    <div class="gl-bars" id="gl-bars">
+      <div class="gl-row gl-head"><span>Etiqueta</span><span class="gl-track">${ticks.map(t => `<i style="left:${glPos(t)}%">${t.toLocaleString('es-AR')}x</i>`).join('')}</span><span class="r">${L ? 'vs normal' : 'Rel'}</span><span class="r gl-com">${L ? esc(unidad) : 'Com/1K'}</span><span class="r">Reels</span></div>
+      ${grupos.map(x => { const p = glPos(x.rel ?? 1), c = 50, nx = prop?.[x.k];
+        return `<button class="gl-row ${x.n<GL_CHICA?'chica':''} ${x.k===GL.sel?'on':''}" data-k="${esc(x.k)}" title="${esc(defs[x.k]||'')}${x.n<GL_CHICA?` · muestra chica (${x.n} reels)`:''}${nx?` · @${esc(PROPIA)} ${relf(nx.rel)} con ${nx.n} reels`:''}">
+          <span class="gl-lab">${esc(glLab(d, x.k))}</span>
+          <span class="gl-track"><span class="gl-bar" style="left:${Math.min(p,c)}%;width:${Math.max(Math.abs(p-c), 0.6)}%"></span>${nx && nx.rel != null ? `<span class="gl-prop" style="left:${glPos(nx.rel)}%"></span>` : ''}</span>
+          <b class="r">${relf(x.rel)}</b><span class="r gl-com">${L ? rawf(x.raw) : d1(x.com)}</span><span class="r muted">${x.n}</span></button>`; }).join('')}
+    </div></div>`;
+  html += '<div id="gl-roles"></div>';
+  const muro = reels.filter(r => !GL.sel || r[d] === GL.sel).slice().sort((a,b) => GL.orden==='fecha' ? b.fecha.localeCompare(a.fecha) : GL.orden==='leads' ? (b.ku??-1) - (a.ku??-1) : (b[GL.orden]??-1) - (a[GL.orden]??-1));
+  html += `<div class="card"><div class="card-title">Reels <span class="sub">${muro.length}${sel?' · '+esc(glLab(d, sel.k)):''}</span>
+      <select id="gl-orden" style="margin-left:auto;background:var(--surface2);border:1px solid var(--line);color:var(--ink);padding:6px 9px;border-radius:8px;font:12.5px Inter"><option value="rel">orden: Rel</option><option value="leads">orden: leads</option><option value="com_k">orden: com/1K</option><option value="views">orden: vistas</option><option value="fecha">orden: fecha</option></select></div>
+    <div class="grid" id="gl-grid">${muro.slice(0, GL.ver).map((r,i) => `<div class="gc" data-id="${esc(r.id)}"><div class="gi">${r.th?`<img src="${esc(r.th)}" alt="" loading="lazy">`:'<div class="noimg">sin imagen</div>'}
+        <span class="rk">#${i+1}</span><span class="md">${esc(r.obj ? GL_OBJ[r.obj] : glLab(d, r[d]))}</span>
+        <div class="ov">${L && r.ku != null ? `<b>${num(r.ku)}<small>leads</small></b><span title="leads cada 1.000 vistas">${d1(r.kk)}/1K</span>` : `<b>${relf(r.rel)}</b><span title="comentarios cada 1.000 vistas">${d1(r.com_k)} com/1K</span>`}</div></div>
+      <div class="gb"><div class="cu">${ddmmaa(r.fecha)} <span class="muted" style="font-weight:400">· ${num(Math.round(r.views))} vistas${r.kw ? ' · ' + esc(r.kw) : ''}</span></div><div class="cap">${esc(r.ap || '—')}</div></div></div>`).join('') || '<div class="empty">Sin reels.</div>'}</div>${muro.length > GL.ver ? `<div class="acts" style="justify-content:center"><button class="btn sec" id="gl-mas">Ver ${Math.min(48, muro.length - GL.ver)} más · quedan ${muro.length - GL.ver}</button></div>` : ''}</div>`;
+  $('#gl-wrap').innerHTML = html;
+  $('#gl-orden').value = GL.orden;
+  $('#gl-orden').onchange = e => { GL.orden = e.target.value; GL.ver = 48; renderGuion(); };
+  if($('#gl-mas')) $('#gl-mas').onclick = () => { const y = window.scrollY; GL.ver += 48; renderGuion(); window.scrollTo(0, y); };
+  $('#gl-bars').onclick = e => { const b = e.target.closest('button.gl-row'); if(!b) return; GL.sel = GL.sel === b.dataset.k ? '' : b.dataset.k; GL.ver = 48; renderGuion(); };
+  $('#gl-grid').onclick = e => { const c = e.target.closest('.gc'); if(c) abrirGuion(c.dataset.id); };
+  if(typeof renderRoles === 'function') renderRoles(reels);
+}
+
+const GL_ROL = { hook:'hook', setup:'contexto', problem:'problema', example:'ejemplo', advice:'consejo', payoff:'remate', cta:'CTA', other:'otro' };
+function renderRoles(reels){
+  const box = $('#gl-roles'); if(!box) return;
+  const d = GL.dim;
+  const rs = reels.filter(r => r.ro && (!GL.sel || r[d] === GL.sel)).sort((a,b) => b.rel - a.rel);
+  const tit = `<div class="card-title">Anatomía del guion · top vs resto${GL.sel ? ` <span class="sub">${esc(glLab(d, GL.sel))}</span>` : ''} <i class="i" title="Cada reel partido en tramos y cada tramo etiquetado por su rol (schema de creator-lab). Top = el tercio de reels con más Rel; resto = el tercio con menos, dentro del período${GL.sel ? ' y la etiqueta elegida' : ''}. % = reels con al menos un tramo de ese rol. Dónde = posición mediana del primer tramo con ese rol en los reels top (0% = arranque, 100% = final).">i</i></div>`;
+  if(rs.length < 9){ box.innerHTML = `<div class="card">${tit}<div class="empty">${rs.length ? `Solo ${rs.length} reels con tramos etiquetados: no alcanza para comparar (mínimo 9).` : 'Sin tramos etiquetados todavía.'}</div></div>`; return; }
+  const t = Math.ceil(rs.length / 3), top = rs.slice(0, t), resto = rs.slice(-t);
+  const pct = (g, rol) => g.filter(r => rol in r.ro.pos).length / g.length * 100;
+  const seq = g => { const c = {}; for(const r of g){ const k = r.ro.sec.filter(x => x !== 'other').slice(0, 4).join('>'); c[k] = (c[k] || 0) + 1; }
+    const [k, n] = Object.entries(c).sort((a,b) => b[1] - a[1])[0] || ['', 0]; return { pasos: k ? k.split('>') : [], n }; };
+  const st = seq(top), sr = seq(resto);
+  const seqHtml = (s, g) => s.pasos.length ? `<div class="gl-seq">${s.pasos.map(x => `<span class="tag">${esc(GL_ROL[x] || x)}</span>`).join('<i>→</i>')}</div><div class="kpi-sub">${s.n} de ${g.length} reels arrancan así</div>` : '<div class="muted">—</div>';
+  const filas = Object.keys(GL_ROL).filter(x => x !== 'other').map(rol => ({ rol, a: pct(top, rol), b: pct(resto, rol), pos: glMed(top.filter(r => rol in r.ro.pos).map(r => r.ro.pos[rol])) }))
+    .sort((x, y) => (y.a - y.b) - (x.a - x.b));
+  const dif = v => `${v > 0 ? '+' : ''}${Math.round(v)} pts`;
+  box.innerHTML = `<div class="card">${tit}
+    <div class="gl-seqs"><div><div class="kpi-label">Secuencia más común · top ${top.length}</div>${seqHtml(st, top)}</div><div><div class="kpi-label">Secuencia más común · resto ${resto.length}</div>${seqHtml(sr, resto)}</div></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>Rol</th><th class="r" title="% de los reels top que tienen este rol">Top</th><th class="r" title="% del resto que tiene este rol">Resto</th><th class="r">Diferencia</th><th class="r" title="posición mediana del primer tramo con este rol en los reels top">Dónde</th></tr></thead><tbody>
+    ${filas.map(x => `<tr title="${esc(G.roles?.[x.rol] || '')}"><td>${esc(GL_ROL[x.rol])}</td><td class="r"><b>${Math.round(x.a)}%</b></td><td class="r">${Math.round(x.b)}%</td><td class="r">${dif(x.a - x.b)}</td><td class="r muted">${x.pos == null ? '—' : `al ${Math.round(x.pos)}%`}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+}
+
+let GP = null;
+async function pasajes(){ if(GP) return GP; try{ GP = await api('/api/radar/guion?pasajes=1'); }catch(e){ GP = {}; } return GP; }
+
+function abrirGuion(id){
+  const r = (G.cuentas[GL.cuenta] || []).find(x => x.id === id); if(!r) return;
+  const enRadar = r.radar && ((D?.piezas||[]).some(p => p.id === id) || (C?.piezas||[]).some(p => p.id === id));
+  const mets = [['Rel', relf(r.rel)], ['Vistas', num(Math.round(r.views))], r.ku != null ? ['Leads', num(r.ku)] : ['Com/1K', d1(r.com_k)], r.kk != null ? ['Leads/1K', d1(r.kk)] : ['Likes/1K', d1(r.likes_k)]];
+  const html = `<div class="dhead"><span class="chip">${esc(GL.cuenta)} · reel · ${ddmm(r.fecha)}/${r.fecha.slice(2,4)}</span><button class="x" onclick="cerrar()">cerrar ✕</button></div>
+    <h2>${esc(r.ap || '(sin apertura)')}${(r.ap||'').length >= 159 ? '…' : ''}</h2>
+    <div class="acts"><a class="btn sec" href="${esc(r.url)}" target="_blank" rel="noopener">Abrir en Instagram ↗</a>${enRadar?`<button class="btn sec" onclick="abrir('${esc(id)}')">Análisis completo</button>`:''}</div>
+    ${r.th?`<img class="dimg" src="${esc(r.th)}" alt="">`:''}
+    <div class="mets">${mets.map(([l,v])=>`<div class="met"><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+    ${r.obj ? `<p style="margin:4px 0 0"><span class="tag tipo">${esc(GL_OBJ[r.obj])}</span>${r.kw ? `<span class="tag">keyword ${esc(r.kw)}</span>` : ''}${r.ku != null ? `<span class="tag">${num(r.ku)} usuarios comentaron la keyword · ${num(r.kc)} comentarios</span>` : ''}</p>` : ''}
+    <h3>Anatomía del guion <i class="i" title="etiqueta · confianza que se asignó el clasificador (autoinformada, no calibrada)">i</i></h3>
+    <div class="gl-labs">${Object.entries(GL_DIMS).map(([k,l]) => `<span>${l}</span><span>${esc(glLab(k, r[k]))}</span><span>${r.conf?.[k]!=null?Math.round(r.conf[k]*100)+'%':'—'}</span>`).join('')}</div>
+    <h3>Guion por tramos</h3><div id="gl-dr-pas"><div class="muted">cargando…</div></div>`;
+  const dr = $('#drawer'); dr.innerHTML = html; dr.classList.add('open'); dr.setAttribute('aria-hidden','false');
+  pasajes().then(gp => { const box = $('#gl-dr-pas'); if(!box) return; const ps = gp[id];
+    box.innerHTML = ps?.length ? ps.map(([t, rol]) => `<div class="gl-tr"><span class="tag">${esc(GL_ROL[rol] || rol)}</span><span>${esc(t)}</span></div>`).join('') : '<div class="muted">Sin tramos etiquetados.</div>'; });
+}
+
+// ═══ HISTORIAS ═══
+let HS = null;
+const HSS = { cuenta:'', dias:7, orden:'fecha' };
+const HS_TIPO = { hand_raiser:'hand raiser', cta:'CTA', why_now:'why now', encuesta:'encuesta', awareness:'awareness', prueba_social:'prueba social', nutricion:'nutrición', libre:'libre' };
+const hsCta = h => /contest|respond|escrib|coment|mand(a|á)me|link|agend/i.test(h.caption || '');
+async function loadHistorias(){
+  try{ HS = await api('/api/radar/historias'); }catch(e){ return; }
+  if(!HS.historias.length) return;
+  const n = {}; for(const h of HS.historias) n[h.cuenta] = (n[h.cuenta]||0) + 1;
+  const cs = Object.keys(n).sort((a,b) => (!PROPIAS.has(a)) - (!PROPIAS.has(b)) || n[b]-n[a]);
+  if(!HSS.cuenta) HSS.cuenta = (PROPIA && n[PROPIA]) ? '@'+PROPIA : '*';
+  $('#hs-cuenta').innerHTML = `<option value="*">todas las cuentas seguidas · ${HS.historias.filter(h=>!PROPIAS.has(h.cuenta)).length}</option>` + cs.map(c => `<option value="@${esc(c)}">@${esc(c)} · ${n[c]}</option>`).join('');
+  $('#hs-cuenta').value = HSS.cuenta;
+  $('#hs-cuenta').onchange = e => { HSS.cuenta = e.target.value; renderHistorias(); };
+  $('#hs-orden').onchange = e => { HSS.orden = e.target.value; renderHistorias(); };
+  $('#hs-dias').onclick = e => { const b = e.target.closest('button'); if(b){ HSS.dias = +b.dataset.d; renderHistorias(); } };
+  renderHistorias();
+}
+function renderHistorias(){
+  const esN = PROPIAS.has(HSS.cuenta.replace(/^@/, '')) && HS.historias.some(h => '@'+h.cuenta === HSS.cuenta && h.m);
+  document.querySelectorAll('#hs-dias button').forEach(b => b.classList.toggle('on', +b.dataset.d === HSS.dias));
+  const corte = HSS.dias ? new Date(Date.now() - HSS.dias*864e5).toISOString() : '';
+  let hs = HS.historias.filter(h => (HSS.cuenta === '*' ? !PROPIAS.has(h.cuenta) : '@'+h.cuenta === HSS.cuenta) && (!corte || (h.fecha||'') >= corte));
+  const o = HSS.orden;
+  if(o !== 'fecha') hs = hs.slice().sort((a,b) => (b.m?.[o] ?? -1) - (a.m?.[o] ?? -1));
+  const ult = HS.competencia_ultima ? new Date(HS.competencia_ultima*1000) : null;
+  $('#hs-meta').textContent = `${hs.length} historias${ult ? ` · cuentas seguidas al ${ult.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'})} ${ult.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})}` : ''}`;
+  const tile = (l, v, s, t) => `<div class="kpi" title="${esc(t)}"><div class="kpi-label">${esc(l)}</div><div class="kpi-value">${v}</div><div class="kpi-sub">${s}</div></div>`;
+  let html = '';
+  if(esN){
+    const conM = hs.filter(h => h.m);
+    const resp = conM.reduce((s,h) => s + (h.m.respuestas||0), 0);
+    const top = conM.slice().sort((a,b) => (b.m.respuestas||0) - (a.m.respuestas||0))[0];
+    html += `<div class="kpis">
+      ${tile('Historias', num(hs.length), `${conM.length} con métricas`, 'historias de la cuenta propia capturadas en el período')}
+      ${tile('Respuestas', num(resp), `${d1(glMed(conM.map(h=>h.m.resp_k)))} por 1K alcance (mediana)`, 'DMs a las historias: el lead de cada historia que pide responder. Suma del período.')}
+      ${tile('Alcance', num(glMed(conM.map(h=>h.m.alcance))), 'mediana por historia', 'cuentas únicas que vieron la historia (última lectura antes de vencer)')}
+      ${tile('Salida', conM.length ? d1(glMed(conM.map(h=>h.m.salida_pct))) + '%' : '—', 'mediana · tap para salir / alcance', 'porcentaje del alcance que cerró las historias en esa. Más bajo = retiene mejor.')}
+      ${tile('Más respondida', top ? num(top.m.respuestas) : '—', top ? esc((top.caption||top.tx||'').slice(0,40)) : '—', 'historia con más respuestas del período')}
+    </div>`;
+  } else {
+    const cuentas = new Set(hs.map(h => h.cuenta));
+    const conSt = hs.filter(h => h.st && (h.st.links || h.st.encuestas || h.st.preguntas)).length;
+    html += `<div class="kpis">
+      ${tile('Historias', num(hs.length), `${cuentas.size} cuentas`, 'historias de las cuentas de Semillas capturadas en el período')}
+      ${tile('Con voz', num(hs.filter(h => h.tx).length), `de ${hs.filter(h => h.tipo==='video').length} videos`, 'videos con habla transcripta. Los de solo música quedan sin texto.')}
+      ${tile('Con link / encuesta / caja', num(conSt), 'stickers de conversión', 'historias con sticker de link, encuesta o caja de preguntas')}
+      ${tile('Costo último día', HS.competencia_usd != null ? 'US$ ' + d1(HS.competencia_usd) : '—', 'Apify', 'costo de la última corrida diaria de Apify')}
+    </div>`;
+  }
+  const fh = f => f ? new Date(f).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+  html += `<div class="card hs"><div class="grid" id="hs-grid">${hs.map(h => `<div class="gc" data-id="${esc(h.id)}"><div class="gi">${h.fr?`<img src="${esc(h.fr)}" alt="" loading="lazy">`:'<div class="noimg">sin imagen</div>'}
+      <span class="rk">${fh(h.fecha)}</span><span class="md">${esc(h.tipo||'')}${h.dur?` · ${Math.round(h.dur)}s`:''}</span>
+      <div class="ov">${h.m ? `<b>${num(h.m.respuestas)}<small>resp</small></b><span>${num(h.m.alcance)} alc</span>` : `<b style="font-size:14px">@${esc(h.cuenta)}</b>`}</div></div>
+    <div class="gb"><div class="cap">${esc(h.caption || h.tx || '—')}</div>
+      <div class="tags">${h.lectura?.tipo && h.lectura.tipo!=='libre'?`<span class="tag tipo">${esc(HS_TIPO[h.lectura.tipo]||h.lectura.tipo)}</span>`:''}${(hsCta(h)||h.lectura?.cta)?'<span class="tag ok">CTA</span>':''}${h.lectura?.keyword?`<span class="tag">${esc(h.lectura.keyword)}</span>`:''}${h.st?.links?'<span class="tag">link</span>':''}${h.st?.encuestas?'<span class="tag">encuesta</span>':''}${h.st?.preguntas?'<span class="tag">caja</span>':''}${h.tx?'<span class="tag">voz</span>':''}</div></div></div>`).join('') || '<div class="empty">Sin historias en el período.</div>'}</div></div>`;
+  $('#hs-wrap').innerHTML = html;
+  $('#hs-grid').onclick = e => { const c = e.target.closest('.gc'); if(c) abrirHistoria(c.dataset.id); };
+}
+function abrirHistoria(id){
+  const h = HS.historias.find(x => x.id === id); if(!h) return;
+  const m = h.m;
+  const mets = m ? [['Respuestas', num(m.respuestas)], ['Alcance', num(m.alcance)], ['Salida', m.salida_pct!=null ? d1(m.salida_pct)+'%' : '—'], ['Visitas perfil', num(m.visitas)]] : [];
+  const st = h.st || {};
+  const html = `<div class="dhead"><span class="chip">@${esc(h.cuenta)} · historia · ${esc(new Date(h.fecha).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}))}</span><button class="x" onclick="cerrar()">cerrar ✕</button></div>
+    ${h.url?`<div class="acts"><a class="btn sec" href="${esc(h.url)}" target="_blank" rel="noopener">Abrir en Instagram ↗</a></div>`:''}
+    ${h.fr?`<img class="dimg" style="max-height:460px;object-fit:contain" src="${esc(h.fr)}" alt="">`:''}
+    ${mets.length?`<div class="mets">${mets.map(([l,v])=>`<div class="met"><b>${v}</b><span>${l}</span></div>`).join('')}</div>`:''}
+    ${h.lectura?.tipo?`<p style="margin:8px 0 0"><span class="tag tipo">${esc(HS_TIPO[h.lectura.tipo]||h.lectura.tipo)}</span>${h.lectura.cta?'<span class="tag ok">pide acción</span>':''}${h.lectura.keyword?`<span class="tag">keyword ${esc(h.lectura.keyword)}</span>`:''}</p>`:''}
+    ${h.caption?`<h3>Texto en pantalla</h3><pre class="copy">${esc(h.caption)}</pre>`:''}
+    ${h.tx?`<h3>Hablado</h3><pre class="copy">${esc(h.tx)}</pre>`:''}
+    ${(st.links||st.encuestas||st.preguntas||st.menciones)?`<h3>Stickers</h3><div>${(st.links||[]).map(u=>`<span class="tag">link · ${esc(u)}</span>`).join('')}${(st.encuestas||[]).map(q=>`<span class="tag">encuesta · ${esc(q)}</span>`).join('')}${(st.preguntas||[]).map(q=>`<span class="tag">caja · ${esc(q)}</span>`).join('')}${(st.menciones||[]).map(u=>`<span class="tag">@${esc(u)}</span>`).join('')}</div>`:''}
+    ${m && h.m_at ? `<p class="muted" style="margin-top:10px">métricas leídas ${esc(new Date(h.m_at).toLocaleString('es-AR'))}</p>` : ''}`;
+  const dr = $('#drawer'); dr.innerHTML = html; dr.classList.add('open'); dr.setAttribute('aria-hidden','false');
+}
+
+function renderSemillas(){
+  const s = D.semillas || [], g = gestiona();
+  $('#sem-n').textContent = `${s.filter(x=>x.activa).length} activas de ${s.length}`;
+  $('#alta').style.display = g ? '' : 'none';
+  $('#t-semillas tbody').innerHTML = s.map(x => `<tr class="${x.activa?'':'sin-dato'}" data-h="${esc(x.handle)}">
+    <td><b><a href="https://www.instagram.com/${esc(x.handle)}/" target="_blank" rel="noopener" style="text-decoration:none">@${esc(x.handle)}</a></b>${x.activa?'':' <span class="tag">pausada</span>'}${x.nombre?`<br><span class="muted">${esc(x.nombre)}</span>`:''}</td>
+    <td>${(x.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</td>
+    <td class="r">${num(x.seguidores)}</td><td class="r">${num(x.piezas_semana)}</td><td class="r">${num(x.comentarios_semana)}</td>
+    <td class="r">${x.piezas_semana?num(x.bangers):'—'}</td><td class="r">${num(x.med_views)}</td><td class="r" title="piezas históricas usadas para la mediana (mín 5)">${num(x.n_baseline)}</td>
+    <td>${x.historias?'<span class="tag ok">sí</span>':'<span class="tag">no</span>'}${g?`<button class="lk" data-a="historias" data-v="${x.historias?0:1}">${x.historias?'apagar':'prender'}</button>`:''}</td>
+    <td class="muted">${esc(x.nota||'')}</td>
+    <td style="white-space:nowrap">${g?`<button class="lk" data-e="1">editar</button><button class="lk ${x.activa?'peligro':''}" data-a="activa" data-v="${x.activa?0:1}">${x.activa?'pausar':'reactivar'}</button>`:''}</td></tr>`).join('') || `<tr><td colspan="11"><div class="empty">Sin cuentas. Agregá la primera arriba.</div></td></tr>`;
+}
+async function trasSemillas(j){ const d = await api('/api/radar/datos'); D = d; PROPIAS = propias(); PROPIA = [...PROPIAS][0] || ''; renderSemillas(); fillCuentas(); return j; }
+$('#a-b').onclick = async () => {
+  const h = $('#a-h').value.trim(); if(!h){ $('#a-h').focus(); return; }
+  const b = $('#a-b'); b.disabled = true;
+  try{
+    const j = await api('/api/radar/semillas', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ handle: h, tags: [$('#a-t').value], historias: $('#a-s').checked, nota: $('#a-n').value }) });
+    await trasSemillas(j);
+    $('#a-h').value = ''; $('#a-n').value = '';
+    const partes = [j.agregadas.length?`${j.agregadas.length} agregada${j.agregadas.length===1?'':'s'}`:'', j.reactivadas.length?`${j.reactivadas.length} reactivada${j.reactivadas.length===1?'':'s'}`:'', j.ya_estaban.length?`${j.ya_estaban.length} ya estaba${j.ya_estaban.length===1?'':'n'}`:''].filter(Boolean);
+    flash(partes.join(' · ') + '. Se leen en la próxima corrida, o ahora con Sincronizar.');
+  }catch(e){ flash(e.message, true); } finally { b.disabled = false; }
+};
+$('#a-h').onkeydown = e => { if(e.key === 'Enter') $('#a-b').click(); };
+$('#t-semillas').addEventListener('click', async e => {
+  const b = e.target.closest('button.lk'); if(!b) return;
+  const h = b.closest('tr').dataset.h;
+  if(b.dataset.e){ editarCuenta(h); return; }
+  b.disabled = true;
+  try{ await trasSemillas(await api('/api/radar/semillas', { method:'PATCH', headers:{'content-type':'application/json'}, body: JSON.stringify({ handle: h, [b.dataset.a]: b.dataset.v === '1' }) })); flash('Guardado ✓'); }
+  catch(err){ flash(err.message, true); b.disabled = false; }
+});
+
+// ═══ EDITAR CUENTA ═══
+const TAGS_RADAR = ['propia', 'competencia', 'referente', 'nicho'];
+function editarCuenta(h){
+  const x = (D.semillas || []).find(s => s.handle === h); if(!x) return;
+  ABIERTA = '';
+  const d = $('#drawer');
+  d.innerHTML = `<div class="dhead"><span class="chip">@${esc(h)}</span><button class="x" onclick="cerrar()">cerrar ✕</button></div>
+    <h2>Editar cuenta</h2>
+    <p class="muted">${x.nombre ? esc(x.nombre) + ' · ' : ''}${num(x.seguidores)} seguidores</p>
+    <h3>Tags</h3>
+    <div class="alta">${TAGS_RADAR.map(t => `<label class="chip" style="cursor:pointer"><input type="checkbox" class="e-tag" value="${t}" ${(x.tags||[]).includes(t)?'checked':''}> ${t}</label>`).join('')}</div>
+    <h3>Nota</h3>
+    <div class="alta"><input class="h" id="e-nota" value="${esc(x.nota||'')}" placeholder="para qué la seguimos"></div>
+    <h3>Qué se lee</h3>
+    <div class="alta">
+      <label class="chip" style="cursor:pointer"><input type="checkbox" id="e-act" ${x.activa?'checked':''}> activa (se leen sus piezas)</label>
+      <label class="chip" style="cursor:pointer"><input type="checkbox" id="e-his" ${x.historias?'checked':''}> capturar historias</label>
+    </div>
+    <div class="acts"><button class="btn" id="e-ok">Guardar</button></div>
+    <h3>Quitar del radar</h3>
+    <p class="muted">Saca la cuenta y todo lo que el radar guardó de ella: piezas, análisis, historias y comentarios. No se puede deshacer. Si solo querés dejar de leerla, destildá "activa".</p>
+    <div class="acts"><button class="btn sec" id="e-del" style="color:var(--red)">Quitar @${esc(h)}</button></div>`;
+  d.classList.add('open'); d.setAttribute('aria-hidden','false');
+  const guardar = async body => api('/api/radar/semillas', { method:'PATCH', headers:{'content-type':'application/json'}, body: JSON.stringify({ handle: h, ...body }) });
+  $('#e-ok').onclick = async () => {
+    const b = $('#e-ok'); b.disabled = true;
+    try{
+      await trasSemillas(await guardar({ tags: [...d.querySelectorAll('.e-tag:checked')].map(i => i.value), nota: $('#e-nota').value, activa: $('#e-act').checked, historias: $('#e-his').checked }));
+      cerrar(); flash('Cuenta guardada ✓');
+    }catch(err){ flash(err.message, true); b.disabled = false; }
+  };
+  $('#e-del').onclick = async () => {
+    if(!confirm(`¿Quitar @${h} del radar? Se borran sus piezas, historias y comentarios guardados.`)) return;
+    const b = $('#e-del'); b.disabled = true; b.textContent = 'Quitando…';
+    try{
+      const j = await guardar({ quitar: true });
+      DET.clear(); await trasSemillas(j);
+      syncFiltros(); renderKpis(); renderTendencias(); renderTabla(); renderGrid(); loadCuentas(); loadGuion(); loadHistorias();
+      cerrar(); flash(`@${h} quitada · ${j.piezas} piezas y ${j.historias} historias borradas`);
+    }catch(err){ flash(err.message, true); b.disabled = false; b.textContent = 'Reintentar'; }
+  };
+}
+
+// ═══ ESTADO Y SINCRONIZACIÓN ═══
+const PASOS = [
+  ['piezas', 'Piezas', 'reels, carruseles y posts de los últimos días de cada cuenta activa, con sus métricas'],
+  ['historias', 'Historias', 'las historias activas de las cuentas que las tienen prendidas'],
+  ['propias', 'Historias propias', 'las historias activas de la cuenta propia con sus métricas (Graph API)'],
+  ['perfiles', 'Perfiles', 'seguidores, nombre y bio de cada cuenta'],
+  ['comentarios', 'Comentarios', 'los comentarios de las piezas más comentadas de la semana'],
+  ['ciclo', 'Procesar lo que llegó', 'recoge las corridas terminadas, baja las imágenes, transcribe y analiza'],
+  ['minar', 'Minar comentarios', 'dolores, objeciones, preguntas y jerga sobre los comentarios ya bajados'],
+];
+const fhora = f => f ? new Date(f).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+async function loadEstado(){
+  try{ E = await api('/api/radar/estado'); }catch(e){ return; }
+  const c = E.conexiones, faltan = [!c.apify && 'Apify', !c.claude && 'Claude', !c.instagram_propio && 'Instagram propio', !c.transcripcion && 'transcripción'].filter(Boolean);
+  const chip = $('#c-con');
+  chip.style.display = '';
+  chip.className = 'chip' + (c.apify && c.claude ? '' : ' falta');
+  chip.textContent = faltan.length ? 'falta conectar: ' + faltan.join(', ') : 'todo conectado';
+  chip.title = 'Apify lee Instagram. Claude analiza. Instagram propio (Graph API) trae las métricas de las historias de la cuenta. La transcripción pasa a texto lo que se dice.';
+  chip.onclick = () => document.querySelector('#tabs button[data-v=semillas]').click();
+  $('#b-sync').style.display = gestiona() ? '' : 'none';
+  renderEstado(); renderSemillas(); renderComentarios();
+}
+function renderEstado(){
+  if(!E) return;
+  const c = E.conexiones;
+  const fila = (ok, nombre, detalle) => `<tr><td><b>${nombre}</b></td><td class="${ok?'ok':'mal'}">${ok?'conectado':'falta'}</td><td class="muted">${detalle}</td></tr>`;
+  $('#est-wrap').innerHTML = `<div class="cols2"><div><table class="tbl"><tbody>
+      ${fila(c.apify, 'Apify', 'lee piezas, perfiles, historias y comentarios de Instagram · gastó US$ ' + d1(E.gasto_apify_30d) + ' en 30 días')}
+      ${fila(c.claude, 'Claude', 'analiza cada pieza, lee las historias y escribe las recreaciones · ' + esc(E.modelo))}
+      ${fila(c.instagram_propio, 'Instagram propio', 'métricas de las historias de la cuenta (alcance, respuestas, salidas)')}
+      ${fila(!!c.transcripcion, 'Transcripción', c.transcripcion ? 'pasa a texto lo que se dice en reels e historias · ' + esc(c.transcripcion) : 'sin esto los reels se analizan solo por el caption y la portada')}
+    </tbody></table><p class="muted" style="margin-top:10px">${num(E.sin_analizar)} piezas de los últimos 30 días esperan análisis.</p></div>
+    <div class="scroll-x"><table class="tbl"><thead><tr><th>Corrida</th><th>Estado</th><th class="r">Trajo</th><th class="r">Nuevas</th><th class="r">US$</th><th>Cuándo</th></tr></thead><tbody>
+      ${(E.corridas||[]).map(k => `<tr title="${esc(k.error||'')}"><td><b>${esc(k.tipo)}</b><br><span class="muted">${esc(k.pedida_por||'')}</span></td><td class="${k.estado==='error'?'mal':k.estado==='recogida'?'ok':''}">${esc(k.estado==='lanzada'?'en curso':k.estado==='recogida'?'lista':'error')}</td><td class="r">${num(k.items)}</td><td class="r">${num(k.nuevos)}</td><td class="r">${k.costo_usd==null?'—':d1(k.costo_usd)}</td><td class="muted">${fhora(k.iniciado)}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">Sin corridas todavía.</td></tr>'}
+    </tbody></table></div></div>`;
+}
+$('#b-sync').onclick = () => {
+  ABIERTA = '';
+  const d = $('#drawer');
+  d.innerHTML = `<div class="dhead"><span class="chip">Sincronizar</span><button class="x" onclick="cerrar()">cerrar ✕</button></div>
+    <h2>Qué querés traer ahora</h2>
+    <p class="muted">Todo esto corre solo, en horario. Desde acá se adelanta. Las lecturas de Instagram tardan unos minutos: se lanzan y el resultado aparece cuando se procesa.</p>
+    ${PASOS.map(([k, n, t]) => `<div class="paso"><div><b>${n}</b><small>${t}</small></div><button class="btn sec" data-p="${k}">${k==='ciclo'||k==='minar'||k==='propias'?'Correr':'Lanzar'}</button></div>`).join('')}
+    <div id="sync-r" style="margin-top:14px"></div>`;
+  d.classList.add('open'); d.setAttribute('aria-hidden','false');
+  d.querySelectorAll('button[data-p]').forEach(b => b.onclick = async () => {
+    const txt = b.textContent; b.disabled = true; b.textContent = 'Corriendo…';
+    try{
+      const j = await accion({ accion:'sincronizar', paso: b.dataset.p });
+      $('#sync-r').innerHTML = `<pre class="copy">${esc(JSON.stringify(j, null, 1))}</pre>`;
+      flash(j.ok === false ? (j.motivo || 'No se pudo') : 'Listo ✓', j.ok === false);
+      loadEstado();
+      if(b.dataset.p === 'ciclo' || b.dataset.p === 'minar' || b.dataset.p === 'propias'){ DET.clear(); D = await api('/api/radar/datos'); syncFiltros(); renderKpis(); renderTendencias(); fillCuentas(); renderTabla(); renderGrid(); renderSemillas(); renderComentarios(); loadCuentas(); loadGuion(); loadHistorias(); }
+    }catch(e){ flash(e.message, true); $('#sync-r').innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+    finally{ b.disabled = false; b.textContent = txt; }
+  });
+};
+
+function renderComentarios(){
+  const c = D.comentarios;
+  if(!c){ $('#com-wrap').innerHTML = `<div class="empty">Sin minería de comentarios todavía.${gestiona()?' Desde <b>Sincronizar</b>: primero <b>Comentarios</b> (los baja), después <b>Procesar lo que llegó</b> y por último <b>Minar comentarios</b>.':''}</div>`; return; }
+  const lista = (arr, key) => `<table class="tbl"><tbody>${(arr||[]).map(x=>`<tr><td><b>${esc(x[key])}</b>${x.ejemplos?`<br><span class="muted">${x.ejemplos.slice(0,2).map(esc).join(' · ')}</span>`:''}${x.contexto?`<br><span class="muted">${esc(x.contexto)}</span>`:''}</td><td class="r muted">${x.n??''}</td></tr>`).join('')}</tbody></table>`;
+  $('#com-wrap').innerHTML = `<div class="kpis"><div class="kpi"><div class="kpi-label">Comentarios analizados</div><div class="kpi-value">${num(c.n_comentarios)}</div><div class="kpi-sub">${esc(c.semana)}</div></div></div>
+    <div class="cols2"><div class="card"><div class="card-title">Dolores</div>${lista(c.dolores,'tema')}</div><div class="card"><div class="card-title">Objeciones</div>${lista(c.objeciones,'tema')}</div></div>
+    <div class="cols2"><div class="card"><div class="card-title">Preguntas frecuentes</div>${lista(c.preguntas,'pregunta')}</div><div class="card"><div class="card-title">Jerga del lead <i class="i" title="palabras textuales del público. Verificar antes de usarlas en un título (regla de jerga).">i</i></div>${lista(c.jerga,'palabra')}</div></div>
+    <div class="card"><div class="card-title">Ideas de contenido que responden</div><ul class="beats">${(c.ideas_contenido||[]).map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>`;
+}
+load();
+</script>
+</body>
+</html>

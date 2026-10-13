@@ -1,0 +1,798 @@
+[
+ {
+  "semana": "2026-W40",
+  "desde": "2026-09-28",
+  "hasta": "2026-10-04",
+  "n_secuencias": 27,
+  "resultado": {
+   "ctas": [
+    {
+     "texto": "esto es exactamente lo que armamos con cada cliente cuando entra. si querés que agendemos una 1-1 y te haga yo toda la estrategia... MANDAME “YO” ⤵️",
+     "cuenta": "ramiro.cubria",
+     "keyword": "YO"
+    },
+    {
+     "texto": "Unicamente para las PROXIMAS 4 personas / - 1 mes EXTRA de servicio / - 20% de DESCUENTO / Respondé \"YO\"⤵️ y te paso el video + entregables",
+     "cuenta": "nahue.urso",
+     "keyword": "YO"
+    },
+    {
+     "texto": "ultimo dia para agendar tu call antes del aumento / responde “yo” ⬇️",
+     "cuenta": "ramiro.cubria",
+     "keyword": "YO"
+    },
+    {
+     "texto": "Obtén tus 3 ideas ganadoras, específicas para tu caso. / Responde \"IDEA\" y te las mando",
+     "cuenta": "herasmedia",
+     "keyword": "IDEA"
+    },
+    {
+     "texto": "Comenta \"MANUAL\" para que aproveches al máximo estos 3 meses (Solo estará disponible 24h⚠️)",
+     "cuenta": "victorherasemprendedor",
+     "keyword": "MANUAL"
+    },
+    {
+     "texto": "Creo que esta entrevista vale más que nunca.. / Si queres verla, responde “100” y te la paso!!",
+     "cuenta": "emigonzalezz.ok",
+     "keyword": "100"
+    },
+    {
+     "texto": "lo metes en tu claude / IA y redactas contenido ganador que trae agendas / poneme “SOP” si lo queres ⬇️",
+     "cuenta": "ramiro.cubria",
+     "keyword": "SOP"
+    },
+    {
+     "texto": "Si queres saber tu costo real... / Respondé esta historia con la palabra \"COSTO\" ⤵️ y te mando la calculadora",
+     "cuenta": "nahue.urso",
+     "keyword": "COSTO"
+    },
+    {
+     "texto": "que estás esperando para entrar? / tocas el boton y te mando los entregables. basta de procrastinar.",
+     "cuenta": "ramiro.cubria",
+     "keyword": "✋"
+    },
+    {
+     "texto": "Te armé una lista con ejemplos de productos ganadores por categoría🔥 / Contestá \"PRODUCTO\" ⤵️ y te la mando",
+     "cuenta": "itsmaurito",
+     "keyword": "PRODUCTO"
+    }
+   ],
+   "hooks": [
+    {
+     "texto": "Últimamente leo mucho esto: \"Emprender es arriesgado, es mejor algo seguro\"",
+     "cuenta": "victorherasemprendedor",
+     "patron": "Creencia del avatar citada textual como si viniera de los mensajes"
+    },
+    {
+     "texto": "me pasó algo MUY LOCO.",
+     "cuenta": "ramiro.cubria",
+     "patron": "Loop abierto con una imagen que no tiene relación con el tema"
+    },
+    {
+     "texto": "No puedo creerlo🤯🤯🤯",
+     "cuenta": "emigonzalezz.ok",
+     "patron": "Reacción sin contexto que se paga en el frame siguiente con una captura"
+    },
+    {
+     "texto": "2020 / Todo el mundo encerrado, todo el mundo asustado. / Y yo vi algo que nadie estaba viendo... ➡️",
+     "cuenta": "itsmaurito",
+     "patron": "Fecha + contexto de época + oportunidad que nadie veía, con flecha"
+    },
+    {
+     "texto": "Día 1 ?",
+     "cuenta": "elsensei",
+     "patron": "Pregunta binaria de autoselección sobre una pantalla de trabajo"
+    },
+    {
+     "texto": "Hoy os tengo un regalo 🎁 / (Valorado en $9250) / Victor, mis reels no cogen views",
+     "cuenta": "herasmedia",
+     "patron": "Regalo con valor anclado + el dolor dicho en DMs del público"
+    },
+    {
+     "texto": "43.000 vistas en las stories. / hay cuentas con cientos de miles de seguidores que tienen menos de 1500 vistas.",
+     "cuenta": "ramiro.cubria",
+     "patron": "Resultado propio con captura + contraste con quien debería ganarte"
+    },
+    {
+     "texto": "El otro día le mandamos esta foto a un cliente de lo que le estaba pagando a su mayorista 👇",
+     "cuenta": "nahue.urso",
+     "patron": "Caso ajeno + costo cuantificado en un gráfico comparativo"
+    },
+    {
+     "texto": "No eres consciente de lo que puede cambiar tu vida en 3 meses",
+     "cuenta": "victorherasemprendedor",
+     "patron": "Antes/después propio con meses que instala un plazo ancla"
+    },
+    {
+     "texto": "Pov: Estás entrenando pero Claude Code todavía no termino",
+     "cuenta": "agustinbadt",
+     "patron": "POV de vida personal mientras la herramienta trabaja sola"
+    }
+   ],
+   "resumen": "Semana de 27 secuencias dominada por el Hand Raiser: 8 de tipo HR, entre ellas 3 HR-CLASICO, 2 HR-ESTACIONAL, HR-CASO, HR-COSTO y HR-RES. Le siguen 6 historias LIBRE de respiro y 4 POLL o cajas de preguntas. Ramiro Cubria fue el que más empujó: hizo 5 secuencias que recorrieron todo el embudo (CTA-REPLICA, why-now de último día, dos HR con keyword SOP y CTA-STACK con botón ✋). Elsensei publicó 5 secuencias sin pedido, puro lifestyle y mentalidad. El arranque del último trimestre apareció como why-now estacional en Victor Heras ('los 3 meses que quedan del año') y en Emi González ('aprovechar este Q4'). Hubo 8 secuencias con estructura fuera del catálogo, sobre todo de mentalidad, awareness y cajas de preguntas.",
+   "recursos": [
+    {
+     "cuenta": "ramiro.cubria",
+     "keyword": "YO",
+     "recurso": "Llamada 1-1 donde arma toda la estrategia de pauta"
+    },
+    {
+     "cuenta": "ramiro.cubria",
+     "keyword": "YO",
+     "recurso": "Llamada para entrar al servicio con el precio actual y dos meses extra gratis"
+    },
+    {
+     "cuenta": "nahue.urso",
+     "keyword": "YO",
+     "recurso": "Video de cómo funciona la consultoría + entregables"
+    },
+    {
+     "cuenta": "herasmedia",
+     "keyword": "IDEA",
+     "recurso": "Herramienta web (Viralidad) que, tras 5 preguntas, entrega 3 ideas de contenido para tu caso"
+    },
+    {
+     "cuenta": "victorherasemprendedor",
+     "keyword": "MANUAL",
+     "recurso": "Manual 'Cómo cambiar tu vida en 3 meses' para aprovechar el último trimestre (disponible 24 h)"
+    },
+    {
+     "cuenta": "emigonzalezz.ok",
+     "keyword": "100",
+     "recurso": "Entrevista de YouTube con el alumno: cómo arrancó, cómo lo hizo y qué errores cometió"
+    },
+    {
+     "cuenta": "ramiro.cubria",
+     "keyword": "SOP",
+     "recurso": "Doc 'Ganchos, formatos y guiones', armado con Claude a partir de sus 100 reels con más agendas, para cargar en tu IA"
+    },
+    {
+     "cuenta": "ramiro.cubria",
+     "keyword": "SOP",
+     "recurso": "PDF 'Manual completo: Cómo QUINTUPLICAR la cantidad de vistas en tus historias de Instagram'"
+    },
+    {
+     "cuenta": "nahue.urso",
+     "keyword": "COSTO",
+     "recurso": "Calculadora de importación (costo puesto, unitario, ganancia y margen)"
+    },
+    {
+     "cuenta": "ramiro.cubria",
+     "keyword": "✋",
+     "recurso": "PDF 'Info. Programa 1-1 (20-100K con IG)' / los entregables"
+    },
+    {
+     "cuenta": "itsmaurito",
+     "keyword": "PRODUCTO",
+     "recurso": "Lista de productos ganadores por categoría (los que explotan un mes, los de temporada y los de todo el año)"
+    },
+    {
+     "cuenta": "emigonzalezz.ok",
+     "keyword": "VIDEO",
+     "recurso": "Video de YouTube sobre qué hacer en el Q4 y novedades para los últimos 3 meses del año"
+    },
+    {
+     "cuenta": "agustinbadt",
+     "keyword": "(link)",
+     "recurso": "Curso gratis de 2 h de Claude Code en YouTube, con sticker de link"
+    }
+   ],
+   "transiciones": [
+    {
+     "texto": "Pero antes, te comento que se trabaja dentro➡️",
+     "cuenta": "nahue.urso"
+    },
+    {
+     "texto": "¿Seguro comparado con qué?",
+     "cuenta": "victorherasemprendedor"
+    },
+    {
+     "texto": "hoy les muestro el paso a paso que sigo con mi equipo para rotar creativos ➡️",
+     "cuenta": "ramiro.cubria"
+    },
+    {
+     "texto": "Y lo mejor de todo... / Es que hace un tiempo grabamos una entrevista con el",
+     "cuenta": "emigonzalezz.ok"
+    },
+    {
+     "texto": "¿Por qué motivo te quedan solo $20?",
+     "cuenta": "nahue.urso"
+    },
+    {
+     "texto": "Por eso os he creado esto 👇🏻",
+     "cuenta": "victorherasemprendedor"
+    },
+    {
+     "texto": "eso es todo, literalmente todo.",
+     "cuenta": "ramiro.cubria"
+    },
+    {
+     "texto": "Arme esto que es una locura",
+     "cuenta": "emigonzalezz.ok"
+    },
+    {
+     "texto": "Estás a UN producto. / No digo que sea el primero que pruebes. Pero estás a uno",
+     "cuenta": "itsmaurito"
+    },
+    {
+     "texto": "Muchos ya estáis recibiendo vuestras 3 ideas",
+     "cuenta": "herasmedia"
+    }
+   ],
+   "estructuras_nuevas": [
+    {
+     "cuenta": "victorherasemprendedor",
+     "nombre": "AWARE-CREENCIA · Creencia citada invertida",
+     "ficha_id": "victorherasemprendedor|2026-09-29",
+     "recorrido": "Creencia del avatar citada textual ('Últimamente leo mucho esto:') → pregunta que la desarma ('¿X comparado con qué?') + noticia real como prueba externa → redefinición del concepto → antes/después personal con años → máxima de contraste que cierra en el mismo concepto, sin CTA",
+     "cuando_usarla": "Para piezas de etapa problema dirigidas al de 9 a 5 (ángulo 21). En tu marca lo que se desarma es 'depender de un solo ingreso', nunca el trabajo. Sirve como pieza de nutrición antes de un HR."
+    },
+    {
+     "cuenta": "elsensei",
+     "nombre": "POLL-PROYECTIVA · ¿Qué harías vos si fuera tuyo?",
+     "ficha_id": "elsensei|2026-09-29",
+     "recorrido": "Resultado propio en pantalla → pregunta proyectiva (¿qué harías si fuera tuyo?) → respuesta por DM con CTA mínimo ('Escucho 👀') → 1 o 2 frames de lifestyle mudo que confirman la vida",
+     "cuando_usarla": "Para abrir conversaciones por DM sin keyword. En tu marca se proyecta tiempo, no plata ('si tus tiempos fueran tuyos, ¿qué harías primero?'), y las respuestas alimentan las historias del día siguiente."
+    },
+    {
+     "cuenta": "elsensei",
+     "nombre": "AWARE-BINARIA · Día 1 o algún día",
+     "ficha_id": "elsensei|2026-09-30",
+     "recorrido": "Pantalla del trabajo real + pregunta binaria ('Día 1 ?') → frame mudo con sticker de ubicación como imagen del 'algún día'",
+     "cuando_usarla": "Para piezas de mentalidad contra la procrastinación (ángulo 17). Funciona como frame corto que prepara un pedido en otro momento del día. Va sin cifras ni saldos."
+    },
+    {
+     "cuenta": "ramiro.cubria",
+     "nombre": "WN-DOBLE · Último día + escasez existencial",
+     "ficha_id": "ramiro.cubria|2026-09-30",
+     "recorrido": "Frame 1: último día antes de la suba + bonus por entrar hoy + deseo del avatar + keyword → frame 2 hablado, sin texto ni CTA, publicado minutos después: confesión de que el 1-1 podría dejar de existir",
+     "cuando_usarla": "Solo en el cierre de una suba de precio real y si de verdad hay un límite de alumnos 1-1. Suma una segunda urgencia para el que no reacciona al precio."
+    },
+    {
+     "cuenta": "nahue.urso",
+     "nombre": "POLL-RUTINA · Caja con contexto + teaser con prueba de uso",
+     "ficha_id": "nahue.urso|2026-09-30",
+     "recorrido": "Caja de preguntas abierta desde la rutina real ('mañana respondo desde el depósito') → teaser de clase sostenido con prueba de uso propio ('hace 2 meses no hacemos un P&L manual') + why-now estacional → cierre de comunidad o lifestyle",
+     "cuando_usarla": "Como calentamiento antes de anunciar una clase o un recurso. Junta preguntas y deja instalado el tema, con la IA como herramienta y no como identidad."
+    },
+    {
+     "cuenta": "agustinbadt",
+     "nombre": "POLL-RESPUESTAS · Respuestas de caja que terminan en recurso",
+     "ficha_id": "agustinbadt|2026-10-03",
+     "recorrido": "Apertura lifestyle ('Hacks de tener un negocio online') → respuesta sobre vida o libertad → respuesta sobre negocio (principio + dato propio contraintuitivo) → respuesta al bloqueo de un seguidor ('no doy el paso') resuelta con un recurso gratis",
+     "cuando_usarla": "Como segundo tiempo de una caja abierta días antes (agustinbadt la abrió el 09-29). Las respuestas se ordenan de deseo a acción y el CTA va pegado a la objeción real del público."
+    },
+    {
+     "cuenta": "elsensei",
+     "nombre": "LIBRE-FLASHBACK · Presente → recuerdo con fecha circulada",
+     "ficha_id": "elsensei|2026-10-03",
+     "recorrido": "Lifestyle de hoy con ubicación → detalle cotidiano que baja el tono → captura o momento de hoy → recuerdo viejo con fecha y lugar circulados en rojo → creencia ('Siempre lo supe…')",
+     "cuando_usarla": "Para piezas de mentalidad o historia personal (ángulo 16) sin CTA. El presente se cuenta con tiempo y libertad, no con autos ni saldos."
+    },
+    {
+     "cuenta": "herasmedia",
+     "nombre": "PRUEBA-STACK · Stack de wins sin CTA",
+     "ficha_id": "herasmedia|2026-10-02",
+     "recorrido": "Apertura lifestyle muda ('Mirad esto' + ubicación) → win 1 → win 2 → win 3 → win 4 con resultado de negocio, unidos por la muletilla 'Por aquí X rompiéndola / también / Y por aquí'",
+     "cuando_usarla": "Como prueba social pura entre días de venta, o con cierre 'para los curiosos' si se convierte en CTA-STACK. Solo con casos reales del banco, y el número del overlay tiene que coincidir con la captura."
+    }
+   ],
+   "estructuras_mas_usadas": [
+    {
+     "veces": 5,
+     "codigo": "LIBRE",
+     "cuentas": [
+      "itsmaurito",
+      "elsensei",
+      "bryan.jabalera"
+     ],
+     "lectura": "Son frames de 1 a 3 historias sin texto ni pedido: entrenar, viajar, el escritorio con una meta. Sirven de respiro entre secuencias de venta y para instalar el manejo del tiempo. Se suma una sexta LIBRE de elsensei (10-03) con estructura nueva. En elsensei cruzan seguido a la ostentación (autos, saldos), algo que tu marca no puede copiar."
+    },
+    {
+     "veces": 3,
+     "codigo": "HR-CLASICO",
+     "cuentas": [
+      "herasmedia",
+      "ramiro.cubria",
+      "itsmaurito"
+     ],
+     "lectura": "Es la estructura por defecto para regalar un recurso: herramienta de 3 ideas, SOP armado con Claude, lista de productos. Abren con un loop o con el dolor dicho por los DMs, muestran el recurso por dentro con mockup o captura y cierran con keyword de una palabra. Herasmedia suma prueba de entrega y re-CTA horas después."
+    },
+    {
+     "veces": 2,
+     "codigo": "HR-ESTACIONAL",
+     "cuentas": [
+      "victorherasemprendedor",
+      "emigonzalezz.ok"
+     ],
+     "lectura": "Las dos salieron entre el 1 y el 3 de octubre, colgadas de una ventana real de calendario: los 3 meses que quedan del año o el Q4. Victor la sostiene con un número ancla en todos los frames y escasez de 24 h. Emi la abre con un rant."
+    },
+    {
+     "veces": 1,
+     "codigo": "POLL",
+     "cuentas": [
+      "agustinbadt"
+     ],
+     "lectura": "Un POV de lifestyle con IA abre una caja de preguntas por temas (vida, IA, negocio, mentalidad). Otras 3 cajas de la semana (elsensei 09-29, nahue.urso 09-30, agustinbadt 10-03) se clasificaron como estructura nueva. Agustín la responde el 10-03 y cierra con un recurso: la caja funciona como dispositivo de dos días."
+    },
+    {
+     "veces": 1,
+     "codigo": "CTA-STACK",
+     "cuentas": [
+      "ramiro.cubria"
+     ],
+     "lectura": "Variante 'pov: cierres de mes en [comunidad]': capturas del grupo con el @ y el número de cada alumno, partida en parte 1 y parte 2, con cierre por botón ✋ al PDF del programa. Herasmedia hizo un stack parecido pero sin CTA, cargado como estructura nueva."
+    },
+    {
+     "veces": 1,
+     "codigo": "CTA-REPLICA",
+     "cuentas": [
+      "ramiro.cubria"
+     ],
+     "lectura": "Primero un frame suelto anti-gurú, después el resultado propio con imperfección y 5 pasos con capturas reales del sistema. Cierra con 'esto es exactamente lo que armamos con cada cliente' y la keyword YO para una 1-1."
+    },
+    {
+     "veces": 1,
+     "codigo": "WN-FLASH",
+     "cuentas": [
+      "nahue.urso"
+     ],
+     "lectura": "Hook de alerta en rojo, cualificador, últimos 4 cupos con fecha y 'Pero antes, te comento cómo se trabaja dentro'. Sigue el método en 3 pasos con nombre y cierra con bonus atado a los mismos cupos y la keyword YO a cambio del video."
+    },
+    {
+     "veces": 1,
+     "codigo": "HR-CASO",
+     "cuentas": [
+      "emigonzalezz.ok"
+     ],
+     "lectura": "El hito reciente de un alumno, mostrado con su WhatsApp, revive un activo viejo (una entrevista) que 'hoy vale más que nunca'. La keyword es el número del hito (100)."
+    },
+    {
+     "veces": 1,
+     "codigo": "HR-COSTO",
+     "cuentas": [
+      "nahue.urso"
+     ],
+     "lectura": "Caso ajeno ('le mandamos esta foto a un cliente') con un gráfico de cada $100 que vendés. Sigue una pregunta retórica, un reencuadre y la calculadora a cambio de COSTO."
+    },
+    {
+     "veces": 1,
+     "codigo": "HR-RES",
+     "cuentas": [
+      "ramiro.cubria"
+     ],
+     "lectura": "En 2 frames: resultado propio con captura (43.000 vistas), contraste con cuentas grandes, la ecuación 'más X = más Y = más ventas. simple.' y el PDF a cambio de SOP."
+    },
+    {
+     "veces": 1,
+     "codigo": "PRUEBA",
+     "cuentas": [
+      "agustinbadt"
+     ],
+     "lectura": "Caso de una alumna contado en línea de tiempo ('Primer mes:' / '2do mes:') con capturas del grupo y el resultado atribuido al acompañamiento, sin CTA."
+    },
+    {
+     "veces": 1,
+     "codigo": "TEASER",
+     "cuentas": [
+      "itsmaurito"
+     ],
+     "lectura": "Reshare de un post de un evento con postura hablada ('show berreta') y un pase de pelota que deja el loop abierto."
+    }
+   ]
+  },
+  "modelo": "claude-opus-5-5",
+  "created_at": "2026-10-05T03:02:51.63206+00:00",
+  "updated_at": "2026-10-05T03:02:51.63206+00:00"
+ },
+ {
+  "semana": "2026-W41",
+  "desde": "2026-10-05",
+  "hasta": "2026-10-11",
+  "n_secuencias": 29,
+  "resultado": {
+   "ctas": [
+    {
+     "texto": "Comentá CRONISTA ⤵️ y te la paso / Dale perro que vos podés",
+     "cuenta": "itsmaurito",
+     "keyword": "CRONISTA"
+    },
+    {
+     "texto": "organicé todos los prompts en una sóla biblioteca. / respondé “IA” y es tuya ⤵️",
+     "cuenta": "ramiro.cubria",
+     "keyword": "IA"
+    },
+    {
+     "texto": "comenta “IA” y hablamos",
+     "cuenta": "bryan.jabalera",
+     "keyword": "IA"
+    },
+    {
+     "texto": "Si me mandas LISTA ⤵️ / Te la envio por mensaje y de paso charlamos un rato de tu caso",
+     "cuenta": "itsmaurito",
+     "keyword": "LISTA"
+    },
+    {
+     "texto": "respondé “PLAN” para recibir tu auditoría GRATIS en 1 minuto. ⬇️",
+     "cuenta": "ramiro.cubria",
+     "keyword": "PLAN"
+    },
+    {
+     "texto": "te paso el dashboard para que midas tu estructura + el SOP de la masterclass. respondé “YO” y te llegan los dos",
+     "cuenta": "ramiro.cubria",
+     "keyword": "YO"
+    },
+    {
+     "texto": "queres agendar una llamada conmigo y que te arme toda la estrategia de contenido? / toca este botón y te mando info ⬇️",
+     "cuenta": "ramiro.cubria",
+     "keyword": "botón de respuesta rápida 👋"
+    },
+    {
+     "texto": "pd: tocando la mano te mando entregables de content capital + te regalo algo más...",
+     "cuenta": "ramiro.cubria",
+     "keyword": "reacción 🖐"
+    },
+    {
+     "texto": "Responde “SALEH” y te mando el regalo a ti también",
+     "cuenta": "victorherasemprendedor",
+     "keyword": "SALEH"
+    },
+    {
+     "texto": "Enserio te lo vas a perder? Solo lo dejo por 24 hs / respóndeme “CARPETA” y te lo mando",
+     "cuenta": "emigonzalezz.ok",
+     "keyword": "CARPETA"
+    }
+   ],
+   "hooks": [
+    {
+     "texto": "Hace poco me entrevistaron en El Cronista 👇 / y me hicieron una pregunta que no me esperaba ➡️",
+     "cuenta": "itsmaurito",
+     "patron": "Hace poco [contexto de autoridad real] y me hicieron una pregunta que no me esperaba ➡️"
+    },
+    {
+     "texto": "Todo cambio cuando entendí esto",
+     "cuenta": "victorherasemprendedor",
+     "patron": "Revelación personal que abre un loop"
+    },
+    {
+     "texto": "Los VIDEAZOS que vengo armando con @higgsfield.ai no tienen SENTIDO.",
+     "cuenta": "ramiro.cubria",
+     "patron": "Los [RESULTADOS] que vengo armando con [herramienta] no tienen [SENTIDO] (el resultado es la prueba)"
+    },
+    {
+     "texto": "Cerramos nuestra comunidad con más de 4,400 miembros / Pero tiene una razón muy especial",
+     "cuenta": "agustinbadt",
+     "patron": "Pérdida aparente de un activo grande con número + loop que se cierra en el último frame"
+    },
+    {
+     "texto": "ESTO NO LO TENDRÍA QUE MOSTRAR",
+     "cuenta": "emigonzalezz.ok",
+     "patron": "Leak / secreto en una línea en caja roja"
+    },
+    {
+     "texto": "Antes de irme a china hice una LOCURA.",
+     "cuenta": "nahue.urso",
+     "patron": "Antes de [evento real] hice una LOCURA"
+    },
+    {
+     "texto": "pregunta q me hacen 80 veces por dia: cuanto tardo en ver resultados adentro de content capital",
+     "cuenta": "ramiro.cubria",
+     "patron": "Objeción frecuente formulada como pregunta repetida"
+    },
+    {
+     "texto": "Hoy me llegó esto / Agus / La verdad me encantaría entrar a la academy pero 3 meses me parece poco",
+     "cuenta": "agustinbadt",
+     "patron": "Captura textual de la objeción de un prospecto"
+    },
+    {
+     "texto": "Estoy cansado de repetirlo.. (encuesta: POR DONDE COMPRAS HOY?)",
+     "cuenta": "nahue.urso",
+     "patron": "Frase de hartazgo + encuesta que segmenta antes de la revelación"
+    },
+    {
+     "texto": "pd: cerramos el mes pasado con 700 agendas. insane.",
+     "cuenta": "ramiro.cubria",
+     "patron": "Resultado propio al pasar, en formato posdata, con captura"
+    }
+   ],
+   "resumen": "Semana dominada por el HR: 14 de 29 secuencias fueron hand raisers con keyword. Siguieron LIBRE (6, cuatro de ellas de @elsensei en Japón) y CTA (3, dos de @ramiro.cubria con CTA-CASO). Cubria fue el que más variedad empujó (HR-CLASICO, HR-RES, recorrido paso a paso de un recurso, dos casos en 3 actos) y @nahue.urso le siguió con HR-ENCUESTA, HR-REVEAL, HR-CLASICO, un POV de alumno y un teaser a YouTube. El why-now estacional apareció en tres cuentas (fin de año y Black Friday en @itsmaurito, 'últimos 3 meses' en @herasmedia, Q4 en @nahue.urso). El mismo caso SALEH lo usaron @victorherasemprendedor y @herasmedia con keyword igual al nombre del cliente, prueba de entrega y re-CTA. Hubo 7 recorridos fuera del catálogo: reglas numeradas, collage de prueba, objeción convertida en mejora de oferta y pregunta con premio, entre otros.",
+   "recursos": [
+    {
+     "cuenta": "itsmaurito",
+     "keyword": "CRONISTA",
+     "recurso": "Guía definitiva para comenzar de cero: números reales de cuánta plata hace falta según tu situación"
+    },
+    {
+     "cuenta": "itsmaurito",
+     "keyword": "LISTA",
+     "recurso": "Lista de productos que más se venden en las fiestas y dónde conseguirlos, por DM más una charla sobre su caso"
+    },
+    {
+     "cuenta": "ramiro.cubria",
+     "keyword": "IA",
+     "recurso": "Biblioteca de prompts de Higgsfield (+1000 prompts de escenas ultra realistas)"
+    },
+    {
+     "cuenta": "ramiro.cubria",
+     "keyword": "PLAN",
+     "recurso": "Auditoría de negocio automatizada: diagnóstico + videos + plan de acción de 14 días"
+    },
+    {
+     "cuenta": "ramiro.cubria",
+     "keyword": "YO",
+     "recurso": "Dashboard para medir la estructura de setting + SOP de la masterclass"
+    },
+    {
+     "cuenta": "ramiro.cubria",
+     "keyword": "PDF",
+     "recurso": "Documento con info y entregables del Programa 1-1. Con la reacción de mano: entregables de content capital + regalo extra"
+    },
+    {
+     "cuenta": "bryan.jabalera",
+     "keyword": "IA",
+     "recurso": "Sin recurso: conversación por DM a partir de un caso de alumno"
+    },
+    {
+     "cuenta": "victorherasemprendedor",
+     "keyword": "SALEH",
+     "recurso": "Regalo no especificado ligado a la metodología para crecer y monetizar la cuenta"
+    },
+    {
+     "cuenta": "herasmedia",
+     "keyword": "SALEH",
+     "recurso": "Regalo no especificado (implícitamente, la metodología por sector)"
+    },
+    {
+     "cuenta": "herasmedia",
+     "keyword": "MANUAL",
+     "recurso": "Manual 'Cómo cambiar tu vida en 3 meses' (landing con contador de 24 hs)"
+    },
+    {
+     "cuenta": "agustinbadt",
+     "keyword": "CLASE",
+     "recurso": "Entrada gratis a la clase en vivo del 15/10 + acceso exclusivo al lanzamiento + una solución que venden a negocios"
+    },
+    {
+     "cuenta": "agustinbadt",
+     "keyword": "DOBLE",
+     "recurso": "Cupo en Nexum Academy PRO con duración duplicada (5 cupos)"
+    },
+    {
+     "cuenta": "nahue.urso",
+     "keyword": "YO",
+     "recurso": "Base 'Las 30 importaciones y 10 marcas con sus números' para cargar en Claude u otra IA"
+    },
+    {
+     "cuenta": "nahue.urso",
+     "keyword": "PRODUCTO",
+     "recurso": "Video gratuito sobre cómo elige productos que realmente se venden"
+    },
+    {
+     "cuenta": "nahue.urso",
+     "keyword": "ALIBABA",
+     "recurso": "Video sobre por qué Alibaba ya no va más y cómo conseguir precio real de fábrica"
+    },
+    {
+     "cuenta": "emigonzalezz.ok",
+     "keyword": "RECURSOS",
+     "recurso": "Recopilación de ejemplos, estructuras y errores de ecommerce, por 24 hs"
+    },
+    {
+     "cuenta": "emigonzalezz.ok",
+     "keyword": "CARPETA",
+     "recurso": "Carpeta / biblioteca de recursos de ecommerce que da a sus alumnos VIP, por 24 hs"
+    },
+    {
+     "cuenta": "emigonzalezz.ok",
+     "keyword": "TIENDA",
+     "recurso": "Información para aprender el modelo de ecommerce (entregable no especificado)"
+    },
+    {
+     "cuenta": "elsensei",
+     "keyword": "QUIERO",
+     "recurso": "Enseñarle a invertir gratis aunque no sepa nada"
+    }
+   ],
+   "transiciones": [
+    {
+     "texto": "Y lo dije por algo",
+     "cuenta": "itsmaurito"
+    },
+    {
+     "texto": "Porque lo que te frena amigo no son las ganas, es creer que te hace falta una fortuna para arrancar",
+     "cuenta": "itsmaurito"
+    },
+    {
+     "texto": "Ahora imaginate mirarlo del lado de los que venden...",
+     "cuenta": "itsmaurito"
+    },
+    {
+     "texto": "Ahora no te voy a dejar tirado amigazo / Me tomé el tiempo de armarte…",
+     "cuenta": "itsmaurito"
+    },
+    {
+     "texto": "Pero después dije: '¿Por qué no le duplico la duración del programa?'",
+     "cuenta": "agustinbadt"
+    },
+    {
+     "texto": "Y así entró sin dudarlo / Y se me ocurrió algo...",
+     "cuenta": "agustinbadt"
+    },
+    {
+     "texto": "parte de lo que lo hace posible es esto",
+     "cuenta": "ramiro.cubria"
+    },
+    {
+     "texto": "por cierto, sabiamos antes del webi que su esctructura no aguantaba agendar tantas calls...",
+     "cuenta": "ramiro.cubria"
+    },
+    {
+     "texto": "primero e importante: El producto / se metió en cada clase en vivo. hizo la tarea siempre.",
+     "cuenta": "nahue.urso"
+    },
+    {
+     "texto": "Muchos de mis alumnos que más están generando / Como Joaquín… / EMPEZARON JUSTAMENTE CON ESTO!",
+     "cuenta": "emigonzalezz.ok"
+    }
+   ],
+   "estructuras_nuevas": [
+    {
+     "cuenta": "victorherasemprendedor",
+     "nombre": "AWARE-REGLAS (reglas numeradas sin CTA)",
+     "ficha_id": "victorherasemprendedor|2026-10-10",
+     "recorrido": "Hook de revelación personal ('Todo cambió cuando entendí esto') → Regla 1 → Regla 2 → Regla 3 → Regla 4 'y más importante', cada una sobre un fondo distinto, sin CTA",
+     "cuando_usarla": "Días de mentalidad o nutrición sin pedido, antes de un HR. La numeración sostiene la retención. En tu marca los fondos tienen que ser de trabajo desde la compu, no de lujo."
+    },
+    {
+     "cuenta": "ramiro.cubria",
+     "nombre": "HR-PASOS (recorrido numerado del recurso)",
+     "ficha_id": "ramiro.cubria|2026-10-08",
+     "recorrido": "Paso 1: input mínimo + tiempo → Paso 2: elegís tu problema (lista para autodiagnóstico) → Paso 3: diagnóstico + videos (captura) → Paso 4: plan a medida → collage de todo el entregable + keyword GRATIS",
+     "cuando_usarla": "Cuando el recurso es una herramienta o diagnóstico interactivo real con capturas para mostrar. Cada swipe se siente como avanzar en el proceso."
+    },
+    {
+     "cuenta": "bryan.jabalera",
+     "nombre": "CTA-COLLAGE (prueba apilada + charla)",
+     "ficha_id": "bryan.jabalera|2026-10-10",
+     "recorrido": "Collage en 1 frame (métricas del reel + comentarios + chat del alumno con resultado) → talking head con pedido de sonido explicando mecanismo y caso → 'comentá [KEYWORD] y hablamos'",
+     "cuando_usarla": "Con un caso real con varias capturas disponibles. El CTA promete una conversación, no un recurso, así que filtra intención de compra hacia el DM."
+    },
+    {
+     "cuenta": "nahue.urso",
+     "nombre": "PRUEBA-POV (pov: estás en [programa])",
+     "ficha_id": "nahue.urso|2026-10-08",
+     "recorrido": "'Pov: estás en [programa]' + resultado del alumno con captura → 'primero e importante: [paso 1]' + conducta del alumno + reglas numeradas → 'paso 2: [x]' + reglas + prueba visual",
+     "cuando_usarla": "Caso de alumno sin pedido o como cuerpo de un CTA-CASO (Cubria usó el mismo esqueleto el 10-05 y cerró con PDF). Vende pertenencia y muestra el adentro."
+    },
+    {
+     "cuenta": "agustinbadt",
+     "nombre": "WN-OBJECION (objeción → mejora de oferta)",
+     "ficha_id": "agustinbadt|2026-10-06",
+     "recorrido": "Captura de la objeción de un prospecto → reacción honesta ('me cayó mal') → wins de alumnos que la desmienten → giro: '¿por qué no [mejora]?' → captura del pago del que objetó → cupos + stack + keyword con el nombre de la mejora",
+     "cuando_usarla": "Solo cuando hubo una mejora real del programa y cupos reales. Le da a la oferta un motivo narrativo para abrir hoy."
+    },
+    {
+     "cuenta": "elsensei",
+     "nombre": "HR-PREMIO (pregunta con premio → keyword)",
+     "ficha_id": "elsensei|2026-10-05",
+     "recorrido": "Lifestyle → pregunta abierta provocadora + 'premio a la mejor explicación' → captura del DM del ganador → oferta gratis por keyword hablada → foto vieja con fecha del origen humilde + keyword repetida",
+     "cuando_usarla": "Para entrenar a la audiencia a responder antes de pedir la keyword. El premio tiene que ser real y el origen, verdadero."
+    },
+    {
+     "cuenta": "nahue.urso",
+     "nombre": "TEASER-LINK (puente a YouTube en 1 frame)",
+     "ficha_id": "nahue.urso|2026-10-10",
+     "recorrido": "'Nuevo VIDEO de [hito]' → captura de la miniatura y el título como gancho → link sticker con texto informal estirado",
+     "cuando_usarla": "Cada vez que sale un video largo que muestra el adentro del negocio. No vende: invita."
+    }
+   ],
+   "estructuras_mas_usadas": [
+    {
+     "veces": 6,
+     "codigo": "LIBRE",
+     "cuentas": [
+      "elsensei",
+      "herasmedia",
+      "victorherasemprendedor"
+     ],
+     "lectura": "Lifestyle mudo o casi mudo: 1 a 2 frames con sticker de ubicación (Tokio, Shinjuku), trabajo con la laptop de noche o entreno a media mañana. También vlog en tiempo real con stickers de hora. Lo usan como respiro entre secuencias de venta y para instalar la fantasía de libertad de tiempo. Victor lo cierra con una reflexión de mentalidad en texto largo."
+    },
+    {
+     "veces": 3,
+     "codigo": "HR-CLASICO",
+     "cuentas": [
+      "ramiro.cubria",
+      "nahue.urso",
+      "emigonzalezz.ok"
+     ],
+     "lectura": "Gancho corto con resultado o pregunta frecuente ('me preguntan muchísimo cómo…') → recurso tangible (biblioteca, video, carpeta) → keyword de una palabra. Emi le suma escasez de 24 hs y un recordatorio horas después con la captura del envío."
+    },
+    {
+     "veces": 2,
+     "codigo": "HR-CASO",
+     "cuentas": [
+      "victorherasemprendedor",
+      "herasmedia"
+     ],
+     "lectura": "Antes/después del perfil del cliente → mecanismo nombrado → 'Respondé [NOMBRE DEL CLIENTE]' → captura de DMs como prueba de entrega → re-CTA para rezagados ('a ti también'). La keyword es el nombre del caso."
+    },
+    {
+     "veces": 2,
+     "codigo": "HR-ESTACIONAL",
+     "cuentas": [
+      "itsmaurito",
+      "herasmedia"
+     ],
+     "lectura": "Por la época (octubre): fin de año, Black Friday y Fiestas con encuesta binaria 'comprás o vendés', o 'los últimos 3 meses del año' con antes/después de 90 días y un estudio citado. La urgencia sale del calendario, no de cupos."
+    },
+    {
+     "veces": 2,
+     "codigo": "CTA-CASO",
+     "cuentas": [
+      "ramiro.cubria"
+     ],
+     "lectura": "Objeción frecuente o chiste → caso con chat real y punto de partida → adentro de la llamada o los pasos → obstáculo anticipado → CTA a llamada o PDF del programa. Cierra con una posdata: actualización del cliente o 'tocando la mano te mando…'."
+    },
+    {
+     "veces": 1,
+     "codigo": "HR-CAJA",
+     "cuentas": [
+      "itsmaurito"
+     ],
+     "lectura": "Variante donde la pregunta no viene de la caja sino de una entrevista de prensa (El Cronista): pregunta → respuesta sin dudar → principio → creencia que frena → guía."
+    },
+    {
+     "veces": 1,
+     "codigo": "HR-ENCUESTA",
+     "cuentas": [
+      "nahue.urso"
+     ],
+     "lectura": "El frame 1 es una encuesta ('¿por dónde comprás hoy?') con frase de hartazgo. El frame 2 desarma la opción más votada con una captura. El frame 3 ofrece un video por keyword."
+    },
+    {
+     "veces": 1,
+     "codigo": "HR-REVEAL",
+     "cuentas": [
+      "nahue.urso"
+     ],
+     "lectura": "'Antes de irme a China hice una LOCURA' → datos propios en un dashboard → base con nombre propio y portada para cargar en Claude → keyword YO."
+    },
+    {
+     "veces": 1,
+     "codigo": "HR-RES",
+     "cuentas": [
+      "ramiro.cubria"
+     ],
+     "lectura": "Apertura muda → 'pd: cerramos el mes con 700 agendas' con captura → la herramienta que lo hace posible → doble recurso (dashboard + SOP) con una sola keyword."
+    },
+    {
+     "veces": 1,
+     "codigo": "HR-LEAK",
+     "cuentas": [
+      "emigonzalezz.ok"
+     ],
+     "lectura": "4 frames: 'ESTO NO LO TENDRÍA QUE MOSTRAR' → recurso en 3 ítems → prueba genérica → 24 hs + keyword."
+    },
+    {
+     "veces": 1,
+     "codigo": "TEASER",
+     "cuentas": [
+      "agustinbadt"
+     ],
+     "lectura": "Clase en vivo: pérdida aparente ('cerramos la comunidad de 4.400') → titulares de despidos por IA → temario y fecha → anuncio secreto con regalo → keyword CLASE."
+    },
+    {
+     "veces": 1,
+     "codigo": "PRESENTACION",
+     "cuentas": [
+      "emigonzalezz.ok"
+     ],
+     "lectura": "'Esto es lo que hago' hablado: analogía con el local físico → 'también lo enseño' con ráfaga de nombres de alumnos → objeciones derribadas → keyword."
+    }
+   ]
+  },
+  "modelo": "claude-opus-5-5",
+  "created_at": "2026-10-12T03:05:37.051128+00:00",
+  "updated_at": "2026-10-12T03:05:37.051128+00:00"
+ }
+]

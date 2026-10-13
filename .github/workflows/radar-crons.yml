@@ -1,0 +1,54 @@
+# Crons del Radar por GitHub Actions: la alternativa gratis a los crons de Vercel.
+# Vercel Hobby solo permite crons una vez por día y el Radar necesita procesar cada 10 minutos.
+#
+# Está APAGADO hasta que crees en el repo (Settings → Secrets and variables → Actions):
+#   variable  RADAR_CRON_GITHUB = true
+#   secreto   RADAR_URL         = https://tu-radar.vercel.app   (sin barra al final)
+#   secreto   CRON_SECRET       = el mismo valor que en el servidor
+# Si lo prendés, vaciá los crons de vercel.json ({"crons": []}) para que no corra dos veces.
+name: Radar crons
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # ciclo: recoger, bajar imágenes, transcribir y analizar
+    - cron: "0 21 * * *"     # historias
+    - cron: "0 1 * * *"      # historias (rechequeo)
+    - cron: "0 11 * * *"     # piezas
+    - cron: "0 10 * * 1"     # perfiles
+    - cron: "30 11 * * 1"    # comentarios
+    - cron: "30 13 * * 1"    # minar comentarios
+    - cron: "0 7 * * 0"      # podar imágenes viejas
+    - cron: "15 */6 * * *"   # historias propias (Graph API)
+    - cron: "25 */6 * * *"   # métricas propias (Graph API)
+  workflow_dispatch:
+    inputs:
+      paso:
+        description: "Paso a correr (ciclo, piezas, historias, perfiles, comentarios, minar, podar, propias, metricas)"
+        default: "ciclo"
+
+jobs:
+  radar:
+    if: vars.RADAR_CRON_GITHUB == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Elegir el paso
+        id: paso
+        run: |
+          case "${{ github.event.schedule }}" in
+            "0 21 * * *")   echo "q=paso=historias" >> "$GITHUB_OUTPUT" ;;
+            "0 1 * * *")    echo "q=paso=historias&turno=2" >> "$GITHUB_OUTPUT" ;;
+            "0 11 * * *")   echo "q=paso=piezas" >> "$GITHUB_OUTPUT" ;;
+            "0 10 * * 1")   echo "q=paso=perfiles" >> "$GITHUB_OUTPUT" ;;
+            "30 11 * * 1")  echo "q=paso=comentarios" >> "$GITHUB_OUTPUT" ;;
+            "30 13 * * 1")  echo "q=paso=minar" >> "$GITHUB_OUTPUT" ;;
+            "0 7 * * 0")    echo "q=paso=podar" >> "$GITHUB_OUTPUT" ;;
+            "15 */6 * * *") echo "q=paso=propias" >> "$GITHUB_OUTPUT" ;;
+            "25 */6 * * *") echo "q=paso=metricas" >> "$GITHUB_OUTPUT" ;;
+            "*/10 * * * *") echo "q=paso=ciclo" >> "$GITHUB_OUTPUT" ;;
+            *)              echo "q=paso=${{ inputs.paso || 'ciclo' }}" >> "$GITHUB_OUTPUT" ;;
+          esac
+      - name: Llamar al Radar
+        run: |
+          curl -fsS --max-time 320 -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.RADAR_URL }}/api/radar-sync?${{ steps.paso.outputs.q }}" | head -c 2000

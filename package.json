@@ -1,0 +1,33 @@
+{
+  "name": "radar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Radar de contenido de Instagram: sigue cuentas (competencia y referentes), lee sus piezas e historias con Apify, transcribe y analiza con Claude.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "verificar": "node scripts/verificar.mjs",
+    "semilla": "node scripts/importar-semilla.mjs",
+    "radar": "tsx scripts/radar-local.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.129.0",
+    "@supabase/supabase-js": "^2.105.3",
+    "next": "16.2.11",
+    "react": "^19",
+    "react-dom": "^19",
+    "zod": "^3.24.1"
+  },
+  "optionalDependencies": {
+    "sharp": "0.35.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tsx": "^4.20.0",
+    "typescript": "5.7.3"
+  }
+}
